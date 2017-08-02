@@ -18,5 +18,4 @@ public class ScheduleServiceImplTest {
 		cal.setTime(dateFormat.parse("2017-08-01"));
 		assertEquals(Calendar.TUESDAY, cal.get(Calendar.DAY_OF_WEEK));
 	}
-
 }

@@ -1,7 +1,7 @@
 package org.catframework.agileworking.domain;
 
 import java.io.Serializable;
-import java.util.Calendar;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -22,16 +22,22 @@ import com.fasterxml.jackson.annotation.JsonFormat;
  * @author devzzm
  */
 @Entity
-public class Schedule implements Serializable {
+public class Schedule implements Serializable,Comparable<Schedule>{
 
 	private static final long serialVersionUID = 1L;
+
+	/** 排期的重复模式：不重复. */
+	public static final String REPEAT_MODE_NO = "N";
+
+	/** 排期的重复模式：按周. */
+	public static final String REPEAT_MODE_WEEKLY = "W";
 
 	@Id
 	@GeneratedValue
 	private Long id;
 
 	/** 会议的标题. */
-	@Column(nullable = false)
+	@Column(nullable = false,length=1024)
 	private String title;
 
 	/** 会议室房间编号. */
@@ -55,15 +61,15 @@ public class Schedule implements Serializable {
 	private String creatorNickName;
 
 	/** 创建者的微信头像的链接. */
-	@Column(nullable = false)
+	@Column(nullable = false,length=1024)
 	private String creatorAvatarUrl;
 
 	@Column(nullable = false)
 	/** 会议重复的模式: N-不重复/W-每周. */
 	private String repeatMode;
 
-	@OneToMany(cascade = { CascadeType.ALL }, mappedBy = "schedule")
-	private List<Participant> participants;
+	@OneToMany(cascade = { CascadeType.ALL},fetch=FetchType.EAGER,mappedBy="schedule")
+	private List<Participant> participants = new ArrayList<>();
 
 	public Long getId() {
 		return id;
@@ -85,7 +91,7 @@ public class Schedule implements Serializable {
 		return meetingRoom;
 	}
 
-	@JsonFormat(pattern="yyyy-MM-dd")
+	@JsonFormat(pattern = "yyyy-MM-dd")
 	public Date getDate() {
 		return date;
 	}
@@ -142,15 +148,50 @@ public class Schedule implements Serializable {
 		this.participants = participants;
 	}
 
+	public void setMeetingRoom(MeetingRoom meetingRoom) {
+		this.meetingRoom = meetingRoom;
+	}
+	
+	public void addParticipant(Participant participant) {
+		participant.setSchedule(this);
+		this.getParticipants().add(participant);
+	}
+	
+
 	/**
-	 * @return 返回当前排期属于周几,严格按照 周一为 1 星期天为 7
+	 * @return 当排期的重复模式为按周重复返回 <code>true</code>
 	 */
-	public int getWeekDay() {
-		Calendar cal = Calendar.getInstance();
-		cal.setTime(date);
-		if (cal.get(Calendar.DAY_OF_WEEK) == Calendar.SUNDAY) {
-			return 7;
+	public boolean isRepeatModeWeekly() {
+		return Schedule.REPEAT_MODE_WEEKLY.equals(getRepeatMode());
+	}
+
+	/**
+	 * 判断当前排期和指定的排期是否有冲突.
+	 * 
+	 * @param date 日期
+	 * @param startTime 开始时间
+	 * @param endTime 结束时间
+	 * @return 有冲突返回 <code>true</code>
+	 */
+	public boolean isConflict(Schedule schedule) {
+		if (date.compareTo(schedule.getDate()) != 0) {
+			return false;
 		}
-		return cal.get(Calendar.DAY_OF_WEEK) - 1;
+		if (startTime.compareTo(schedule.getStartTime()) >= 0 && startTime.compareTo(schedule.getEndTime()) < 0) {
+			return true;
+		}
+		if (endTime.compareTo(schedule.getStartTime()) > 0 && endTime.compareTo(schedule.getEndTime()) <= 0) {
+			return true;
+		}
+		return false;
+	}
+
+	@Override
+	public int compareTo(Schedule o) {
+		if(this.date.compareTo(o.getDate())==0) {
+			return this.startTime.compareTo(o.getStartTime());
+		}else {
+			return this.date.compareTo(o.getDate());	
+		}
 	}
 }

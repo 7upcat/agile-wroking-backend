@@ -5,6 +5,8 @@ import java.io.Serializable;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 
 @Entity
 public class Participant implements Serializable{
@@ -16,6 +18,8 @@ public class Participant implements Serializable{
 	private Long id;
 
 	/** 排期 id.*/
+	@ManyToOne
+    @JoinColumn(name="schedule_id")  
 	private Schedule schedule;
 
 	/** 参会人微信昵名.*/

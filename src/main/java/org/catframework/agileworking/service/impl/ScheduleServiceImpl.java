@@ -23,23 +23,40 @@ public class ScheduleServiceImpl implements ScheduleService {
 	private MeetingRoomRepository meetingRoomRepository;
 
 	@Override
-	public List<Schedule> listSchedules(Long meetingRoomId, Date from, Date to) {
+	public List<Schedule> find(Long meetingRoomId, Date from, Date to) {
 		MeetingRoom meetingRoom = meetingRoomRepository.findOne(meetingRoomId);
-		List<Schedule> schedules = scheduleRepository.findMeetingRooms(meetingRoom, from, to);
-		
+		List<Schedule> schedules = scheduleRepository.findByMeetingRoomAndDateBetween(meetingRoom, from, to);
+		List<Schedule> weeklySchedules = scheduleRepository.findByRepeatMode(Schedule.REPEAT_MODE_WEEKLY);
+
+		weeklySchedules.stream().forEach((s1) -> {
+			if (schedules.stream().noneMatch((s2) -> {
+				return s1.getId().equals(s2.getId());
+			})) {
+				schedules.add(s1);
+			}
+		});
+
 		return schedules.stream().map((s) -> {
-			// 按周重复的排期，如果非本周，推算出本周的日期设置到排期中
-			if(s.getDate().before(from)||s.getDate().after(to)) {
-				Calendar cal=Calendar.getInstance();
-				cal.setTime(s.getDate());
-				// 计算和周一相比较的偏移
-				int offset =cal.get(Calendar.DAY_OF_WEEK)-Calendar.MONDAY;
-				Calendar destDate = Calendar.getInstance();
-				destDate.setTime(from);
-				destDate.add(Calendar.DAY_OF_MONTH, offset);
-				s.setDate(destDate.getTime());
+			if (s.isRepeatModeWeekly()) {
+				rescheduling(from, to, s);
 			}
 			return s;
-		}).collect(Collectors.toList());
+		}).filter((s) -> {
+			return s.getDate().compareTo(from) >= 0 || s.getDate().compareTo(to) <= 0;
+		}).sorted().collect(Collectors.toList());
+	}
+
+	// 如果是按周重复的那么需要重新设置调度
+	private Schedule rescheduling(Date from, Date to, Schedule s) {
+
+		if (s.getDate().before(from) || s.getDate().after(to)) {
+			Calendar cal = Calendar.getInstance();
+			cal.setTime(s.getDate());
+			Calendar destDate = Calendar.getInstance();
+			destDate.setTime(from);
+			destDate.add(Calendar.DAY_OF_MONTH,  cal.get(Calendar.DAY_OF_WEEK)- destDate.get(Calendar.DAY_OF_WEEK) );
+			s.setDate(destDate.getTime());
+		}
+		return s;
 	}
 }
