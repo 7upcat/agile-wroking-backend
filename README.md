@@ -1,5 +1,21 @@
 # agile-wroking-backend
-AgileWorking 应用端程序
+
+*AgileWorking* 应用后端程序，基于 *SpringBoot* ，项目属于玩票 **性质**，并未使用高级特性，主要是配合项目组进行小程序的技术验证。
+
+## 构建
+
+### 前置条件
+
+- Jdk1.8+
+- 安装配置 [Maven](http://maven.apache.org/install.html)
+- 安装 [Git](https://git-scm.com/downloads)
+
+### 构建步骤
+
+- git clone https://github.com/7upcat/agile-wroking-backend.git
+- cd agile-working-backend
+- mvn package
+- java -jar target\agile-working-backend-0.0.1-SNAPSHOT.jar
 
 ## 接口清单
 
