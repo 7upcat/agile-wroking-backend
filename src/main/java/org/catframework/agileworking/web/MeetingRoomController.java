@@ -8,6 +8,8 @@ import org.catframework.agileworking.domain.MeetingRoomRepository;
 import org.catframework.agileworking.domain.Schedule;
 import org.catframework.agileworking.domain.ScheduleRepository;
 import org.catframework.agileworking.service.ScheduleService;
+import org.catframework.agileworking.web.support.DefaultResult;
+import org.catframework.agileworking.web.support.Result;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.format.annotation.DateTimeFormat.ISO;
@@ -30,10 +32,10 @@ public class MeetingRoomController {
 
 	@Autowired
 	private ScheduleService scheduleService;
-	
+
 	@RequestMapping(path = "/meetingRooms", method = RequestMethod.GET)
-	public List<MeetingRoom> list() {
-		return meetingRoomRepository.findAll();
+	public Result<List<MeetingRoom>> list() {
+		return DefaultResult.newResult(meetingRoomRepository.findAll());
 	}
 
 	/**
@@ -49,18 +51,17 @@ public class MeetingRoomController {
 		schedule.setMeetingRoom(meetingRoom);
 		scheduleRepository.save(schedule);
 	}
-	
-	
+
 	/**
 	 * 取消已设置的排期.
-	 * @param id 排期 id 
+	 * 
+	 * @param id 排期 id
 	 */
 	@RequestMapping(path = "/meetingRooms/schedule/{id}", method = RequestMethod.DELETE)
 	public void cancelSchedule(@PathVariable Long id) {
-		Schedule schedule=scheduleRepository.findOne(id);
+		Schedule schedule = scheduleRepository.findOne(id);
 		scheduleRepository.delete(schedule);
 	}
-	
 
 	/**
 	 * 查询指定会议室下指定日期区间的排期.
@@ -68,15 +69,15 @@ public class MeetingRoomController {
 	 * @param id 会议室 id
 	 * @param from 开始时间
 	 * @param to 结束时间
-	 * @return 
+	 * @return 指定的会议室指定日期的排期列表
 	 */
 	@RequestMapping(path = "/meetingRooms/{id}/schedule", method = RequestMethod.GET)
-	public List<Schedule> schedules(@PathVariable Long id,
+	public Result<List<Schedule>> schedules(@PathVariable Long id,
 			@RequestParam(name = "from") @DateTimeFormat(iso = ISO.DATE) Date from,
 			@RequestParam(name = "to") @DateTimeFormat(iso = ISO.DATE) Date to) {
-		return scheduleService.find(id, from, to);
+		return DefaultResult.newResult(scheduleService.find(id, from, to));
 	}
-	
+
 	private void validate(Long id, Schedule schedule) {
 		Assert.isTrue(!scheduleService.find(id, schedule.getDate(), schedule.getDate()).stream().anyMatch((s) -> {
 			return s.isConflict(schedule);

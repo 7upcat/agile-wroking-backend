@@ -7,6 +7,7 @@ import org.catframework.agileworking.domain.Participant;
 import org.catframework.agileworking.domain.Schedule;
 import org.catframework.agileworking.domain.ScheduleFactory;
 import org.catframework.agileworking.domain.ScheduleRepository;
+import org.catframework.agileworking.web.support.Result;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,9 +29,9 @@ public class ScheduleControllerTest {
 	
 	@Test
 	public void testJoin() {
-		List<MeetingRoom> meetingRooms = meetingRoomController.list();
+		Result<List<MeetingRoom>> result = meetingRoomController.list();
 		Schedule s = ScheduleFactory.newWeeklySchedule("分行业务平台项目组临时会议", "七猫", "2017-08-02", "13:00", "14:00");
-		meetingRoomController.newSchedule(meetingRooms.get(0).getId(), s);
+		meetingRoomController.newSchedule(result.getPayload().get(0).getId(), s);
 		Participant p = new Participant();
 	    p.setAvatarUrl("some url");
 	    p.setNickName("卯争");

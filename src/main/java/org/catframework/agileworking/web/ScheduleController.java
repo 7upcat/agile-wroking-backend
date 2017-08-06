@@ -17,7 +17,7 @@ public class ScheduleController {
 	private ScheduleRepository scheduleRepository;
 
 	@RequestMapping(path = "/schedules/{id}/join", method = RequestMethod.POST)
-	public Schedule join(@PathVariable Long id, @RequestBody Participant participant) {
+	public void join(@PathVariable Long id, @RequestBody Participant participant) {
 		Schedule schedule = scheduleRepository.findOne(id);
 		if (!schedule.getParticipants().stream().anyMatch((p) -> {
 			return p.getNickName().equals(participant.getNickName());
@@ -25,6 +25,5 @@ public class ScheduleController {
 			schedule.addParticipant(participant);
 			scheduleRepository.save(schedule);
 		}
-		return schedule;
 	}
 }

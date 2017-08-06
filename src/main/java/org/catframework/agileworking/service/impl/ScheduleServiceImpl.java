@@ -47,6 +47,7 @@ public class ScheduleServiceImpl implements ScheduleService {
 	}
 
 	// 如果是按周重复的那么需要重新设置调度
+	// TODO 未考虑如果 from ------> to 跨周的情况，稍后重构修复
 	private Schedule rescheduling(Date from, Date to, Schedule s) {
 
 		if (s.getDate().before(from) || s.getDate().after(to)) {
@@ -54,7 +55,7 @@ public class ScheduleServiceImpl implements ScheduleService {
 			cal.setTime(s.getDate());
 			Calendar destDate = Calendar.getInstance();
 			destDate.setTime(from);
-			destDate.add(Calendar.DAY_OF_MONTH,  cal.get(Calendar.DAY_OF_WEEK)- destDate.get(Calendar.DAY_OF_WEEK) );
+			destDate.add(Calendar.DAY_OF_MONTH, cal.get(Calendar.DAY_OF_WEEK) - destDate.get(Calendar.DAY_OF_WEEK));
 			s.setDate(destDate.getTime());
 		}
 		return s;
