@@ -37,27 +37,31 @@ public class MeetingRoomControllerTest {
 		Result<List<MeetingRoom>> result = meetingRoomController.list();
 
 		// 创建一个每周重复的排期
-		Schedule schedule1 = ScheduleFactory.newWeeklySchedule("分行业务平台项目组临时会议", "七猫", "2017-08-02", "13:00", "14:00");
-		meetingRoomController.newSchedule(result.getPayload().get(0).getId(), schedule1);
-
-		// 当天时间有冲突的案例
-		Schedule schedule2 = ScheduleFactory.newSchedule("POS清算代码评审", "发哥", "2017-08-02", "13:30", "15:00");
+		Schedule schedule1 = ScheduleFactory.newWeeklySchedule("分行业务平台项目组临时会议", "七猫", "2017-08-02", "09:00", "12:00");
 		try {
-			meetingRoomController.newSchedule(result.getPayload().get(0).getId(), schedule2);
-			Assert.fail();
-		} catch (Exception e) {
-			Assert.assertEquals("同已有排期冲突", e.getMessage());
+			meetingRoomController.newSchedule(result.getPayload().get(0).getId(), schedule1);
+
+			// 当天时间有冲突的案例
+			Schedule schedule2 = ScheduleFactory.newSchedule("POS清算代码评审", "发哥", "2017-08-02", "10:00", "11:00");
+			try {
+				meetingRoomController.newSchedule(result.getPayload().get(0).getId(), schedule2);
+				Assert.fail();
+			} catch (Exception e) {
+				Assert.assertEquals("同已有排期冲突", e.getMessage());
+			}
+
+			// 下周时间有冲突的案例
+			Schedule schedule3 = ScheduleFactory.newSchedule("POS清算代码评审", "发哥", "2017-08-09", "09:30", "15:00");
+			try {
+				meetingRoomController.newSchedule(result.getPayload().get(0).getId(), schedule3);
+				Assert.fail();
+			} catch (Exception e) {
+				Assert.assertEquals("同已有排期冲突", e.getMessage());
+			}
+		} finally {
+			scheduleRepository.delete(schedule1);
 		}
 
-		// 下周时间有冲突的案例
-		Schedule schedule3 = ScheduleFactory.newSchedule("POS清算代码评审", "发哥", "2017-08-09", "13:30", "15:00");
-		try {
-			meetingRoomController.newSchedule(result.getPayload().get(0).getId(), schedule3);
-			Assert.fail();
-		} catch (Exception e) {
-			Assert.assertEquals("同已有排期冲突", e.getMessage());
-		}
-		scheduleRepository.delete(schedule1);
 	}
 
 	@Test
@@ -79,11 +83,14 @@ public class MeetingRoomControllerTest {
 		meetingRoomController.newSchedule(result.getPayload().get(0).getId(), schedule1);
 		Schedule schedule2 = ScheduleFactory.newWeeklySchedule("CPOS临时例会", "发哥", "2017-08-08", "14:00", "16:00");
 		meetingRoomController.newSchedule(result.getPayload().get(0).getId(), schedule2);
-		Result<List<Schedule>> schedulesResult = meetingRoomController.schedules(result.getPayload().get(0).getId(),
-				DateUtils.parse("2017-08-07", DateUtils.PATTERN_SIMPLE_DATE),
-				DateUtils.parse("2017-08-11", DateUtils.PATTERN_SIMPLE_DATE));
-		Assert.assertEquals(2, schedulesResult.getPayload().size());
-		scheduleRepository.delete(schedule1);
-		scheduleRepository.delete(schedule2);
+		try {
+			Result<List<Schedule>> schedulesResult = meetingRoomController.schedules(result.getPayload().get(0).getId(),
+					DateUtils.parse("2017-08-07", DateUtils.PATTERN_SIMPLE_DATE),
+					DateUtils.parse("2017-08-11", DateUtils.PATTERN_SIMPLE_DATE));
+			Assert.assertEquals(2, schedulesResult.getPayload().size());
+		} finally {
+			scheduleRepository.delete(schedule1);
+			scheduleRepository.delete(schedule2);
+		}
 	}
 }

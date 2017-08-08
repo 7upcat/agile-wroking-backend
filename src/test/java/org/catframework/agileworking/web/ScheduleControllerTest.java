@@ -8,6 +8,7 @@ import org.catframework.agileworking.domain.Schedule;
 import org.catframework.agileworking.domain.ScheduleFactory;
 import org.catframework.agileworking.domain.ScheduleRepository;
 import org.catframework.agileworking.web.support.Result;
+import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,6 +38,8 @@ public class ScheduleControllerTest {
 	    p.setNickName("卯争");
 		scheduleController.join(s.getId(), p);
 		s=scheduleRepository.findOne(s.getId());
+		Assert.assertEquals(1, s.getParticipants().size());
+		Assert.assertEquals("卯争", s.getParticipants().get(0).getNickName());
 		scheduleRepository.delete(s);
 	}
 }

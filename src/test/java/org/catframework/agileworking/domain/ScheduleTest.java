@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.junit.Assert;
 import org.junit.Test;
 
 public class ScheduleTest {
@@ -26,5 +27,20 @@ public class ScheduleTest {
 		assertSame(s1, schedules.get(0));
 		assertSame(s3, schedules.get(1));
 		assertSame(s2, schedules.get(2));
+	}
+
+	@Test
+	public void isConflict() {
+		Schedule s1 = ScheduleFactory.newSchedule("XXX1", "发哥", "2017-08-02", "13:30", "15:00");
+		Schedule s2 = ScheduleFactory.newSchedule("XXX2", "发哥", "2017-08-03", "13:30", "15:00");
+		Assert.assertFalse(s1.isConflict(s2));
+		Schedule s3 = ScheduleFactory.newSchedule("XXX2", "发哥", "2017-08-02", "13:30", "15:00");
+		Assert.assertTrue(s1.isConflict(s3));
+		Schedule s4 = ScheduleFactory.newSchedule("XXX2", "发哥", "2017-08-02", "10:00", "16:00");
+		Assert.assertTrue(s1.isConflict(s4));
+		Schedule s5 = ScheduleFactory.newSchedule("XXX2", "发哥", "2017-08-02", "10:00", "13:30");
+		Assert.assertFalse(s1.isConflict(s5));
+		Schedule s6 = ScheduleFactory.newSchedule("XXX2", "发哥", "2017-08-02", "15:00", "17:00");
+		Assert.assertFalse(s1.isConflict(s6));
 	}
 }
