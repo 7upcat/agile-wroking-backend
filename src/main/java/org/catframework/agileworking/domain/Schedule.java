@@ -171,6 +171,12 @@ public class Schedule implements Serializable, Comparable<Schedule> {
 	 * @return 有冲突返回 <code>true</code>
 	 */
 	public boolean isConflict(Schedule schedule) {
+		
+		// 同一个排期肯定不算冲突 
+		if(getId().equals(schedule.getId())) {
+			return false;
+		}
+		
 		if (date.compareTo(schedule.getDate()) != 0) {
 			return false;
 		}
@@ -185,7 +191,7 @@ public class Schedule implements Serializable, Comparable<Schedule> {
 		}
 		return false;
 	}
-
+	
 	@Override
 	public int compareTo(Schedule o) {
 		if (this.date.compareTo(o.getDate()) == 0) {

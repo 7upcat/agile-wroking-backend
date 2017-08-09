@@ -39,17 +39,28 @@ public class MeetingRoomController {
 	}
 
 	/**
-	 * 创新排期，单 JVM 并发量可期的情况下，简单粗暴的使用 synchronized 来解决并发创建排期的问题.
+	 * 创新排期，单 JVM 并发量可期的情况下，简单粗暴的使用 synchronized 来解决并发创建、更新排期的问题.
 	 * 
 	 * @param id 会议室 id
 	 * @param schedule 新建的排期
 	 */
 	@RequestMapping(path = "/meetingRooms/{id}/schedule", method = RequestMethod.POST)
-	public synchronized void newSchedule(@PathVariable Long id, @RequestBody Schedule schedule) {
+	public synchronized void createOrUpdateSchedule(@PathVariable Long id, @RequestBody Schedule schedule) {
 		MeetingRoom meetingRoom = meetingRoomRepository.findOne(id);
 		validate(id, schedule);
-		schedule.setMeetingRoom(meetingRoom);
-		scheduleRepository.save(schedule);
+		if (null == schedule.getId()) {
+			schedule.setMeetingRoom(meetingRoom);
+			scheduleRepository.save(schedule);
+		} else {
+			Schedule s = scheduleRepository.findOne(schedule.getId());
+			Assert.notNull(s, "修改的排期不存在.");
+			s.setTitle(schedule.getTitle());
+			s.setStartTime(schedule.getStartTime());
+			s.setEndTime(schedule.getEndTime());
+			s.setDate(schedule.getDate());
+			s.setRepeatMode(schedule.getRepeatMode());
+			scheduleRepository.save(s);
+		}
 	}
 
 	/**
@@ -67,8 +78,7 @@ public class MeetingRoomController {
 	 * 查询指定会议室下指定日期区间的排期.
 	 * 
 	 * @param id 会议室 id
-	 * @param from 开始时间
-	 * @param to 结束时间
+	 * @param date 指定日期
 	 * @return 指定的会议室指定日期的排期列表
 	 */
 	@RequestMapping(path = "/meetingRooms/{id}/schedule", method = RequestMethod.GET)
@@ -79,10 +89,10 @@ public class MeetingRoomController {
 	}
 
 	private void validate(Long id, Schedule schedule) {
-		Assert.isTrue(schedule.getStartTime().compareTo(schedule.getEndTime()) < 0, "会议开始时间需小于结束时间!");
+		Assert.isTrue(schedule.getStartTime().compareTo(schedule.getEndTime()) < 0, "会议开始时间需小于结束时间.");
 		Assert.isTrue(!scheduleService.find(id, schedule.getDate(), schedule.getDate()).stream().anyMatch((s) -> {
 			return s.isConflict(schedule);
-		}), "同已有排期冲突");
+		}), "同已有排期冲突.");
 	}
 
 	public void setMeetingRoomRepository(MeetingRoomRepository meetingRoomRepository) {

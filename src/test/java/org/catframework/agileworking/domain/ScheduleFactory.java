@@ -2,7 +2,7 @@ package org.catframework.agileworking.domain;
 
 import org.catframework.agileworking.utils.DateUtils;
 
-public class ScheduleFactory {
+public final class ScheduleFactory {
 
 	public static final String DEFAULT_CREATOR_AVATAR_URL = "http://baidu.com";
 

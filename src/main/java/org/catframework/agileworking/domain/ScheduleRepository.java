@@ -7,7 +7,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface ScheduleRepository extends JpaRepository<Schedule, Long> {
 
-	List<Schedule> findByMeetingRoomAndDateBetween(MeetingRoom meetingRoom, Date from, Date to);
+	List<Schedule> findByMeetingRoomAndDate(MeetingRoom meetingRoom, Date date);
 	
 	List<Schedule> findByRepeatMode(String repeatMode);
 }

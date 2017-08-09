@@ -3,8 +3,9 @@ package org.catframework.agileworking.service.impl;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
-import java.util.stream.Collectors;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.catframework.agileworking.domain.MeetingRoom;
 import org.catframework.agileworking.domain.MeetingRoomRepository;
 import org.catframework.agileworking.domain.Schedule;
@@ -16,6 +17,8 @@ import org.springframework.stereotype.Component;
 @Component
 public class ScheduleServiceImpl implements ScheduleService {
 
+	private static final Log logger = LogFactory.getLog(ScheduleServiceImpl.class);
+	
 	@Autowired
 	private ScheduleRepository scheduleRepository;
 
@@ -23,41 +26,36 @@ public class ScheduleServiceImpl implements ScheduleService {
 	private MeetingRoomRepository meetingRoomRepository;
 
 	@Override
-	public List<Schedule> find(Long meetingRoomId, Date from, Date to) {
+	public List<Schedule> find(Long meetingRoomId, Date date,Date to) {
 		MeetingRoom meetingRoom = meetingRoomRepository.findOne(meetingRoomId);
-		List<Schedule> schedules = scheduleRepository.findByMeetingRoomAndDateBetween(meetingRoom, from, to);
+		List<Schedule> schedules = scheduleRepository.findByMeetingRoomAndDate(meetingRoom, date);
 		List<Schedule> weeklySchedules = scheduleRepository.findByRepeatMode(Schedule.REPEAT_MODE_WEEKLY);
-
 		weeklySchedules.stream().forEach((s1) -> {
 			if (schedules.stream().noneMatch((s2) -> {
 				return s1.getId().equals(s2.getId());
 			})) {
-				schedules.add(s1);
+				if (s1.getDate().compareTo(date) < 0) {
+					Calendar c1 = Calendar.getInstance();
+					c1.setTime(s1.getDate());
+					Calendar c2 = Calendar.getInstance();
+					c2.setTime(date);
+					logger.info(c1.getTime());
+					logger.info(c2.getTime());
+					if (c1.get(Calendar.DAY_OF_WEEK) == c2.get(Calendar.DAY_OF_WEEK)) {
+						s1.setDate(date);
+						schedules.add(s1);
+					}
+				}
 			}
 		});
-
-		return schedules.stream().map((s) -> {
-			if (s.isRepeatModeWeekly()) {
-				rescheduling(from, to, s);
-			}
-			return s;
-		}).filter((s) -> {
-			return s.getDate().compareTo(from) >= 0 || s.getDate().compareTo(to) <= 0;
-		}).sorted().collect(Collectors.toList());
+		return schedules;
 	}
 
-	// 如果是按周重复的那么需要重新设置调度
-	// TODO 未考虑如果 from ------> to 跨周的情况，稍后重构修复
-	private Schedule rescheduling(Date from, Date to, Schedule s) {
+	public void setScheduleRepository(ScheduleRepository scheduleRepository) {
+		this.scheduleRepository = scheduleRepository;
+	}
 
-		if (s.getDate().before(from) || s.getDate().after(to)) {
-			Calendar cal = Calendar.getInstance();
-			cal.setTime(s.getDate());
-			Calendar destDate = Calendar.getInstance();
-			destDate.setTime(from);
-			destDate.add(Calendar.DAY_OF_MONTH, cal.get(Calendar.DAY_OF_WEEK) - destDate.get(Calendar.DAY_OF_WEEK));
-			s.setDate(destDate.getTime());
-		}
-		return s;
+	public void setMeetingRoomRepository(MeetingRoomRepository meetingRoomRepository) {
+		this.meetingRoomRepository = meetingRoomRepository;
 	}
 }

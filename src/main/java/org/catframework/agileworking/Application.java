@@ -8,7 +8,7 @@ import org.springframework.boot.autoconfigure.jdbc.DataSourceBuilder;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 
-@SpringBootApplication 
+@SpringBootApplication
 public class Application {
 
 	@Bean

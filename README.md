@@ -31,7 +31,7 @@
   + creatorAvatarUrl/创建人微信头像URL
   + repeatMode/会议重复模式（N-不重复/W-每周）
 - 取消排期  **DELETE** `/agileworking/meetingRooms/schedule/{id}`
-- 查询指定日期区间排期  **GET** `/agileworking/meetingRooms/{id}/schedule?from=yyyyMMdd&to=yyyyMMdd`
+- 查询指定会议室指定日期的排期  **GET** `/agileworking/meetingRooms/{id}/schedule?date=yyyyMMdd`
 - 接受会议邀请  **POST** `/agileworking/schedules/{id}/join`
   + nickName/接受邀请人微信昵称
   + avatarUrl/接受邀请人微信头像URL
