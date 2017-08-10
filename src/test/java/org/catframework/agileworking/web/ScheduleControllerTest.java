@@ -59,6 +59,12 @@ public class ScheduleControllerTest {
 		s = scheduleRepository.findOne(s.getId());
 		Assert.assertEquals(1, s.getParticipants().size());
 		Assert.assertEquals("卯争", s.getParticipants().get(0).getNickName());
+		try {
+			scheduleController.join(s.getId(), p);
+			Assert.fail();
+		} catch (Exception e) {
+			Assert.assertEquals("您已加入过此会议啦.", e.getMessage());
+		}
 		scheduleRepository.delete(s);
 	}
 }

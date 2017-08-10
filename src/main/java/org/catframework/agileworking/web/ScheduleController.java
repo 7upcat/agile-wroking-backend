@@ -24,11 +24,14 @@ public class ScheduleController {
 		if (!schedule.getParticipants().stream().anyMatch((p) -> {
 			return p.getNickName().equals(participant.getNickName());
 		})) {
+			if(schedule.getCreatorNickName().equals(participant.getNickName())) {
+				throw new RuntimeException("您已加入过此会议啦.");
+			}
 			schedule.addParticipant(participant);
 			scheduleRepository.save(schedule);
 			return DefaultResult.newResult();
 		}else {
-			throw new RuntimeException("已加入会议不可重复加入.");
+			throw new RuntimeException("您已加入过此会议啦.");
 		}
 	}
 }
