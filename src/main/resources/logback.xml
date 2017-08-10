@@ -22,7 +22,7 @@
 
 	<!-- 日志中显示 sql 的值便于问题排查. -->
 	<logger name="org.hibernate.type" level="trace" />
-	<root level="INFO">
+	<root level="DEBUG">
 		<appender-ref ref="ROLLING" />
 		<appender-ref ref="STDOUT" />
 	</root>
