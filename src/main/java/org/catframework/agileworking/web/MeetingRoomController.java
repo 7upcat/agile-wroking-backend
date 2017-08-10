@@ -45,7 +45,7 @@ public class MeetingRoomController {
 	 * @param schedule 新建的排期
 	 */
 	@RequestMapping(path = "/meetingRooms/{id}/schedule", method = RequestMethod.POST)
-	public synchronized void createOrUpdateSchedule(@PathVariable Long id, @RequestBody Schedule schedule) {
+	public synchronized Result<?> createOrUpdateSchedule(@PathVariable Long id, @RequestBody Schedule schedule) {
 		MeetingRoom meetingRoom = meetingRoomRepository.findOne(id);
 		validate(id, schedule);
 		if (null == schedule.getId()) {
@@ -61,6 +61,7 @@ public class MeetingRoomController {
 			s.setRepeatMode(schedule.getRepeatMode());
 			scheduleRepository.save(s);
 		}
+		return DefaultResult.newResult();
 	}
 
 	/**
@@ -69,9 +70,10 @@ public class MeetingRoomController {
 	 * @param id 排期 id
 	 */
 	@RequestMapping(path = "/meetingRooms/schedule/{id}", method = RequestMethod.DELETE)
-	public void cancelSchedule(@PathVariable Long id) {
+	public Result<?> cancelSchedule(@PathVariable Long id) {
 		Schedule schedule = scheduleRepository.findOne(id);
 		scheduleRepository.delete(schedule);
+		return DefaultResult.newResult();
 	}
 
 	/**

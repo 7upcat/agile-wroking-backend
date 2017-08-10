@@ -11,6 +11,7 @@ public class DefaultResult<T> implements Result<T> {
 	public static Result<?> newResult() {
 		DefaultResult<?> result = new DefaultResult<>();
 		result.status = Result.STATUS_SUCCESS;
+		result.responseCode = ResponseCodes.RESPONSE_CODE_SUCCESS;
 		return result;
 	}
 

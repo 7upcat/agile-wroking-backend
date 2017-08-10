@@ -3,6 +3,8 @@ package org.catframework.agileworking.web;
 import org.catframework.agileworking.domain.Participant;
 import org.catframework.agileworking.domain.Schedule;
 import org.catframework.agileworking.domain.ScheduleRepository;
+import org.catframework.agileworking.web.support.DefaultResult;
+import org.catframework.agileworking.web.support.Result;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -17,13 +19,16 @@ public class ScheduleController {
 	private ScheduleRepository scheduleRepository;
 
 	@RequestMapping(path = "/schedules/{id}/join", method = RequestMethod.POST)
-	public void join(@PathVariable Long id, @RequestBody Participant participant) {
+	public Result<?> join(@PathVariable Long id, @RequestBody Participant participant) {
 		Schedule schedule = scheduleRepository.findOne(id);
 		if (!schedule.getParticipants().stream().anyMatch((p) -> {
 			return p.getNickName().equals(participant.getNickName());
 		})) {
 			schedule.addParticipant(participant);
 			scheduleRepository.save(schedule);
+			return DefaultResult.newResult();
+		}else {
+			throw new RuntimeException("已加入会议不可重复加入.");
 		}
 	}
 }

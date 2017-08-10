@@ -11,6 +11,7 @@ import org.springframework.context.annotation.Bean;
 @SpringBootApplication
 public class Application {
 
+	// TODO 目前应用的代码和数据源的实现强关联，但是好像不这样所有的参数并不能生效
 	@Bean
 	public DataSource dataSource() {
 		return new org.apache.tomcat.jdbc.pool.DataSource(poolProperties());
