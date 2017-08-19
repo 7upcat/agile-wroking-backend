@@ -7,12 +7,15 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 /**
  * 会议室实体.
  * 
  * @author devzzm
  */
 @Entity
+@JsonIgnoreProperties({ "handler","hibernateLazyInitializer" })  
 public class MeetingRoom implements Serializable {
 
 	private static final long serialVersionUID = -1701470269000866582L;
