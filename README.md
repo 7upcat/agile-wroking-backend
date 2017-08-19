@@ -38,3 +38,12 @@
   + openId/接受邀请人微信 openId
   + nickName/接受邀请人微信昵称
   + avatarUrl/接受邀请人微信头像URL
+  
+- 查询加入的会议  **GET** `/agileworking/participant/{openId}?date=yyyyMMdd`
+  +  scheduleId/排期id
+  +  meetingRoomId/会议室 id
+  +  title/会议主题
+  +  openId/参会人的微信 openId
+  +  roomNo/会议室
+  +  start_time/开始时间
+  +  endTime/结束时间 
