@@ -1,6 +1,7 @@
 package org.catframework.agileworking.domain;
 
 import java.io.Serializable;
+import java.util.Date;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -25,11 +26,17 @@ public class Participant implements Serializable{
     @JoinColumn(name="schedule_id")  
 	private Schedule schedule;
 
+	/** 参会人微信 openId.*/
+	private String openId;
+	
 	/** 参会人微信昵名.*/
 	private String nickName;
 
 	/** 参会人微信头像的链接.*/
 	private String avatarUrl;
+	
+	/** 参会日期.*/
+	private Date date;
 
 	public Long getId() {
 		return id;
@@ -61,5 +68,21 @@ public class Participant implements Serializable{
 
 	public void setAvatarUrl(String avatarUrl) {
 		this.avatarUrl = avatarUrl;
+	}
+
+	public String getOpenId() {
+		return openId;
+	}
+
+	public void setOpenId(String openId) {
+		this.openId = openId;
+	}
+
+	public Date getDate() {
+		return date;
+	}
+
+	public void setDate(Date date) {
+		this.date = date;
 	}
 }

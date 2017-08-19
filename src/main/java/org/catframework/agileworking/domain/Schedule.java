@@ -56,6 +56,10 @@ public class Schedule implements Serializable, Comparable<Schedule> {
 	@Column(nullable = false)
 	private String endTime;
 
+	/** 创建者的微信 openId*/
+	@Column(nullable = false)
+	private String creatorOpenId;
+	
 	/** 创建者的微信昵称. */
 	@Column(nullable = false)
 	private String creatorNickName;
@@ -150,6 +154,14 @@ public class Schedule implements Serializable, Comparable<Schedule> {
 
 	public void setMeetingRoom(MeetingRoom meetingRoom) {
 		this.meetingRoom = meetingRoom;
+	}
+	
+	public String getCreatorOpenId() {
+		return creatorOpenId;
+	}
+
+	public void setCreatorOpenId(String creatorOpenId) {
+		this.creatorOpenId = creatorOpenId;
 	}
 
 	public void addParticipant(Participant participant) {

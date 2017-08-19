@@ -23,7 +23,7 @@ public class ScheduleServiceImpl implements ScheduleService {
 	private MeetingRoomRepository meetingRoomRepository;
 
 	@Override
-	public List<Schedule> find(Long meetingRoomId, Date date, Date to) {
+	public List<Schedule> find(Long meetingRoomId, Date date) {
 		MeetingRoom meetingRoom = meetingRoomRepository.findOne(meetingRoomId);
 		List<Schedule> schedules = scheduleRepository.findByMeetingRoomAndDate(meetingRoom, date);
 		List<Schedule> weeklySchedules = scheduleRepository.findByRepeatMode(Schedule.REPEAT_MODE_WEEKLY);

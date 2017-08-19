@@ -109,7 +109,6 @@ public class MeetingRoomControllerTest {
 		meetingRoomController.createOrUpdateSchedule(result.getPayload().get(0).getId(), schedule2);
 		try {
 			Result<List<Schedule>> schedulesResult = meetingRoomController.schedules(result.getPayload().get(0).getId(),
-					DateUtils.parse("2017-08-09", DateUtils.PATTERN_SIMPLE_DATE),
 					DateUtils.parse("2017-08-09", DateUtils.PATTERN_SIMPLE_DATE));
 			Assert.assertEquals(2, schedulesResult.getPayload().size());
 		} finally {

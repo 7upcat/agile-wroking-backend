@@ -68,7 +68,7 @@ public class ScheduleServiceImplTest {
 			meetingRoomController.createOrUpdateSchedule(meetingRooms.get(0).getId(), s2);
 			meetingRoomController.createOrUpdateSchedule(meetingRooms.get(0).getId(), s3);
 			Result<List<Schedule>> result = meetingRoomController.schedules(meetingRooms.get(0).getId(),
-					DateUtils.parse("2017-08-09", DateUtils.PATTERN_SIMPLE_DATE),DateUtils.parse("2017-08-09", DateUtils.PATTERN_SIMPLE_DATE));
+					DateUtils.parse("2017-08-09", DateUtils.PATTERN_SIMPLE_DATE));
 			assertEquals(2, result.getPayload().size());
 		} finally {
 			scheduleRepository.delete(s1);

@@ -10,6 +10,7 @@ public final class ScheduleFactory {
 		Schedule s = new Schedule();
 		s.setTitle(title);
 		s.setCreatorNickName(creator);
+		s.setCreatorOpenId(creator);
 		s.setCreatorAvatarUrl(ScheduleFactory.DEFAULT_CREATOR_AVATAR_URL);
 		s.setDate(DateUtils.parse(date, DateUtils.PATTERN_SIMPLE_DATE));
 		s.setStartTime(startTime);

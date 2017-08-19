@@ -14,5 +14,5 @@ public interface ScheduleService {
 	 * @param date 指定日期
 	 * @return 符合条件的排期列表
 	 */
-	List<Schedule> find(Long meetingRoomId, Date date,Date to);
+	List<Schedule> find(Long meetingRoomId, Date date);
 }

@@ -19,18 +19,18 @@ public class ScheduleController {
 	private ScheduleRepository scheduleRepository;
 
 	@RequestMapping(path = "/schedules/{id}/join", method = RequestMethod.POST)
-	public Result<?> join(@PathVariable Long id, @RequestBody Participant participant) {
+	public Result<Schedule> join(@PathVariable Long id, @RequestBody Participant participant) {
 		Schedule schedule = scheduleRepository.findOne(id);
 		if (!schedule.getParticipants().stream().anyMatch((p) -> {
 			return p.getNickName().equals(participant.getNickName());
 		})) {
-			if(schedule.getCreatorNickName().equals(participant.getNickName())) {
+			if (schedule.getCreatorNickName().equals(participant.getNickName())) {
 				throw new RuntimeException("您已加入过此会议啦.");
 			}
 			schedule.addParticipant(participant);
 			scheduleRepository.save(schedule);
-			return DefaultResult.newResult();
-		}else {
+			return DefaultResult.newResult(schedule);
+		} else {
 			throw new RuntimeException("您已加入过此会议啦.");
 		}
 	}
