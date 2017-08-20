@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.catframework.agileworking.domain.MeetingRoom;
 import org.catframework.agileworking.domain.MeetingRoomRepository;
+import org.catframework.agileworking.domain.Participant;
 import org.catframework.agileworking.domain.Schedule;
 import org.catframework.agileworking.domain.ScheduleRepository;
 import org.catframework.agileworking.service.ScheduleService;
@@ -50,6 +51,7 @@ public class MeetingRoomController {
 		validate(id, schedule);
 		if (null == schedule.getId()) {
 			schedule.setMeetingRoom(meetingRoom);
+			schedule.addParticipant(creatorAsParticipant(schedule));
 			scheduleRepository.save(schedule);
 		} else {
 			Schedule s = scheduleRepository.findOne(schedule.getId());
@@ -64,6 +66,16 @@ public class MeetingRoomController {
 		return DefaultResult.newResult();
 	}
 
+	private Participant creatorAsParticipant(Schedule schedule){
+		Participant p = new Participant();
+		p.setAvatarUrl(schedule.getCreatorAvatarUrl());
+		p.setDate(schedule.getDate());
+		p.setNickName(schedule.getCreatorNickName());
+		p.setSchedule(schedule);
+		p.setOpenId(schedule.getCreatorOpenId());
+		return p;
+	}
+	
 	/**
 	 * 取消已设置的排期.
 	 * 

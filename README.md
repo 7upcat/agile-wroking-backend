@@ -25,7 +25,7 @@
 - 创建/修改排期  **POST** `/agileworking/meetingRooms/{id}/schedule`
   + id/排期id（可选，创建排期为空）
   + title/标题
-  + date/日期（yyyy-MM-dd）
+  + date/日期 `yyyy-MM-dd` 格式
   + startTime/开始时间(hh:min)
   + endTime/结束时间(hh:min)
   + creatorOpenId/创建人微信 openId
@@ -36,14 +36,19 @@
 - 查询指定会议室指定日期的排期  **GET** `/agileworking/meetingRooms/{id}/schedule?date=yyyyMMdd`
 - 接受会议邀请  **POST** `/agileworking/schedules/{id}/join`
   + openId/接受邀请人微信 openId
+  + date/参加会议的日期 `yyyy-MM-dd` 格式
   + nickName/接受邀请人微信昵称
   + avatarUrl/接受邀请人微信头像URL
   
-- 查询加入的会议  **GET** `/agileworking/participant/{openId}?date=yyyyMMdd`
+- 查询加入的会议列表  **GET** `/agileworking/participant/{openId}?date=yyyyMMdd`
+
+  结果中包含一下要素:
   +  scheduleId/排期id
   +  meetingRoomId/会议室 id
+  +  date/排期的日期
   +  title/会议主题
   +  openId/参会人的微信 openId
   +  roomNo/会议室
   +  start_time/开始时间
   +  endTime/结束时间 
+  +  repeatMode/会议重复模式（N-不重复/W-每周）  

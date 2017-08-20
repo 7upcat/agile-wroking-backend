@@ -63,8 +63,12 @@ public class MeetingRoomControllerTest {
 			// 案例验证更新排期
 			schedule1.setTitle("分行业务平台项目组临时会议-修订后");
 			meetingRoomController.createOrUpdateSchedule(result.getPayload().get(0).getId(), schedule1);
-			Assert.assertEquals(schedule1.getTitle(), scheduleRepository.findOne(schedule1.getId()).getTitle());
-
+			Schedule dbSchedule = scheduleRepository.findOne(schedule1.getId());
+			Assert.assertEquals(schedule1.getTitle(), dbSchedule.getTitle());
+			// 创建人默人参加会议
+			Assert.assertEquals(1, dbSchedule.getParticipants().size());
+			Assert.assertEquals(schedule1.getCreatorAvatarUrl(), dbSchedule.getParticipants().get(0).getAvatarUrl());
+			
 			// 当天时间有冲突的案例
 			Schedule schedule2 = ScheduleFactory.newSchedule("POS清算代码评审", "发哥", "2017-08-02", "10:00", "11:00");
 			try {

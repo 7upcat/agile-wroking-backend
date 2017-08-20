@@ -22,11 +22,8 @@ public class ScheduleController {
 	public Result<Schedule> join(@PathVariable Long id, @RequestBody Participant participant) {
 		Schedule schedule = scheduleRepository.findOne(id);
 		if (!schedule.getParticipants().stream().anyMatch((p) -> {
-			return p.getNickName().equals(participant.getNickName());
+			return p.getOpenId().equals(participant.getOpenId());
 		})) {
-			if (schedule.getCreatorNickName().equals(participant.getNickName())) {
-				throw new RuntimeException("您已加入过此会议啦.");
-			}
 			schedule.addParticipant(participant);
 			scheduleRepository.save(schedule);
 			return DefaultResult.newResult(schedule);
