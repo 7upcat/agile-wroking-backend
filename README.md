@@ -21,7 +21,20 @@
 
 接口设计遵循 *Restful* 风格的  **API**，设计，支持以下功能：
 
-- 查询所有会议室列表  **GET** `/agileworking/meetingRooms`
+- 查询团队列表，返回所有的团队 `/agileworking/teams`
+
+- 查询指定 `openId` 的用户是否有加入指定的团队  **GET** `/agileworking/team/{teamId}/user/{openId}`，如果加入则返回 `User` 信息
+
+- 加入指定的团队  **POST** `/agileworking/team/{id}/join`
+ + id/要加入的团队 id 
+ + name/姓名
+ + mobileNo/手机号
+ + openId/微信 openId
+ + nickName/微信昵称
+ + avatarUrl/微信头像 url 
+
+- 查询指定团队下的所有会议室列表  **GET** `/agileworking/meetingRooms/{teamId}`
+
 - 创建/修改排期  **POST** `/agileworking/meetingRooms/{id}/schedule`
   + id/排期id（可选，创建排期为空）
   + title/标题
@@ -38,12 +51,14 @@
   + openId/接受邀请人微信 openId
   + nickName/接受邀请人微信昵称
   + avatarUrl/接受邀请人微信头像URL
+
+- 根据 `id` 查询指定的排期  **GET** `/agileworking/schedules/{id}`，含排期的参与人
   
 - 查询加入的会议  **GET** `/agileworking/participant/{openId}?date=yyyyMMdd`
-  +  scheduleId/排期id
-  +  meetingRoomId/会议室 id
-  +  title/会议主题
-  +  openId/参会人的微信 openId
-  +  roomNo/会议室
-  +  start_time/开始时间
-  +  endTime/结束时间 
+  + scheduleId/排期id
+  + meetingRoomId/会议室 id
+  + title/会议主题
+  + openId/参会人的微信 openId
+  + roomNo/会议室
+  + startTime/开始时间
+  + endTime/结束时间 

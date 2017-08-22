@@ -44,6 +44,20 @@ public class DefaultResult<T> implements Result<T> {
 		return result;
 	}
 
+	/**
+	 * 创建一个具有指定错误消息的失败结果
+	 * 
+	 * @param message 错误消息
+	 * @return 新创建的交易结果
+	 */
+	public static <T> Result<T> newFailResult(String message) {
+		DefaultResult<T> result = new DefaultResult<>();
+		result.status = Result.STATUS_FAIL;
+		result.responseMessage = message;
+		result.responseCode = ResponseCodes.RESPONSE_CODE_SYSTEM_ERROR;
+		return result;
+	}
+
 	private DefaultResult() {
 	}
 

@@ -46,14 +46,14 @@ public class MeetingRoomControllerTest {
 
 	@Test
 	public void list() throws Exception {
-		Result<List<MeetingRoom>> result = meetingRoomController.list();
+		Result<List<MeetingRoom>> result = meetingRoomController.list(MeetingRoomFactory.DEFAULT_TEAM_ID);
 		Assert.assertTrue(result.isSuccess());
 		org.junit.Assert.assertEquals(4, result.getPayload().size());
 	}
 
 	@Test
 	public void newSchedule() {
-		Result<List<MeetingRoom>> result = meetingRoomController.list();
+		Result<List<MeetingRoom>> result = meetingRoomController.list(MeetingRoomFactory.DEFAULT_TEAM_ID);
 
 		// 创建一个每周重复的排期
 		Schedule schedule1 = ScheduleFactory.newWeeklySchedule("分行业务平台项目组临时会议", "七猫", "2017-08-02", "09:00", "12:00");
@@ -90,7 +90,7 @@ public class MeetingRoomControllerTest {
 
 	@Test
 	public void cancelSchedule() {
-		Result<List<MeetingRoom>> result = meetingRoomController.list();
+		Result<List<MeetingRoom>> result = meetingRoomController.list(MeetingRoomFactory.DEFAULT_TEAM_ID);
 		// 创建一个每周重复的排期
 		Schedule s = ScheduleFactory.newWeeklySchedule("分行业务平台项目组临时会议", "七猫", "2017-08-02", "13:00", "14:00");
 		meetingRoomController.createOrUpdateSchedule(result.getPayload().get(0).getId(), s);
@@ -101,7 +101,7 @@ public class MeetingRoomControllerTest {
 
 	@Test
 	public void schedules() {
-		Result<List<MeetingRoom>> result = meetingRoomController.list();
+		Result<List<MeetingRoom>> result = meetingRoomController.list(MeetingRoomFactory.DEFAULT_TEAM_ID);
 		// 创建一个每周重复的排期
 		Schedule schedule1 = ScheduleFactory.newWeeklySchedule("分行业务平台项目组临时会议", "七猫", "2017-08-02", "13:00", "14:00");
 		meetingRoomController.createOrUpdateSchedule(result.getPayload().get(0).getId(), schedule1);

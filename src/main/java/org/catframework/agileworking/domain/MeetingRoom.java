@@ -15,7 +15,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
  * @author devzzm
  */
 @Entity
-@JsonIgnoreProperties({ "handler","hibernateLazyInitializer" })  
+@JsonIgnoreProperties({ "handler", "hibernateLazyInitializer" })
 public class MeetingRoom implements Serializable {
 
 	private static final long serialVersionUID = -1701470269000866582L;
@@ -24,8 +24,11 @@ public class MeetingRoom implements Serializable {
 	@GeneratedValue
 	private Long id;
 
+	@Column(nullable = false)
+	private Long teamId;
+
 	/** 会议室房间编号,唯一. */
-	@Column(nullable = false,unique = true)
+	@Column(nullable = false, unique = true)
 	private String roomNo;
 
 	/** 会议室大小: 大/中/小. */
@@ -101,4 +104,11 @@ public class MeetingRoom implements Serializable {
 		this.terminalId = terminalId;
 	}
 
+	public Long getTeamId() {
+		return teamId;
+	}
+
+	public void setTeamId(Long teamId) {
+		this.teamId = teamId;
+	}
 }

@@ -41,7 +41,7 @@ public class Schedule implements Serializable, Comparable<Schedule> {
 	private String title;
 
 	/** 会议室房间编号. */
-	@ManyToOne(fetch = FetchType.LAZY, optional = false)
+	@ManyToOne(fetch = FetchType.EAGER, optional = false)
 	private MeetingRoom meetingRoom;
 
 	/** 预订日期. */

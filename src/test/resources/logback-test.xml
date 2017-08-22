@@ -8,7 +8,7 @@
   
   <logger name="org.hibernate.type" level="trace"/>
   
-  <root level="DEBUG">
+  <root level="TRACE">
     <appender-ref ref="STDOUT" />
   </root>
 </configuration>

@@ -33,8 +33,8 @@ public class MeetingRoomController {
 	@Autowired
 	private ScheduleService scheduleService;
 
-	@RequestMapping(path = "/meetingRooms", method = RequestMethod.GET)
-	public Result<List<MeetingRoom>> list() {
+	@RequestMapping(path = "/meetingRooms/{id}", method = RequestMethod.GET)
+	public Result<List<MeetingRoom>> list(@PathVariable Long teamId) {
 		return DefaultResult.newResult(meetingRoomRepository.findAll());
 	}
 
@@ -45,7 +45,7 @@ public class MeetingRoomController {
 	 * @param schedule 新建的排期
 	 */
 	@RequestMapping(path = "/meetingRooms/{id}/schedule", method = RequestMethod.POST)
-	public synchronized Result<?> createOrUpdateSchedule(@PathVariable Long id, @RequestBody Schedule schedule) {
+	public synchronized Result<Schedule> createOrUpdateSchedule(@PathVariable Long id, @RequestBody Schedule schedule) {
 		MeetingRoom meetingRoom = meetingRoomRepository.findOne(id);
 		validate(id, schedule);
 		if (null == schedule.getId()) {
@@ -61,7 +61,7 @@ public class MeetingRoomController {
 			s.setRepeatMode(schedule.getRepeatMode());
 			scheduleRepository.save(s);
 		}
-		return DefaultResult.newResult();
+		return DefaultResult.newResult(schedule);
 	}
 
 	/**
