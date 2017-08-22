@@ -34,7 +34,7 @@ public class MeetingRoomController {
 	private ScheduleService scheduleService;
 
 	@RequestMapping(path = "/meetingRooms/{id}", method = RequestMethod.GET)
-	public Result<List<MeetingRoom>> list(@PathVariable Long teamId) {
+	public Result<List<MeetingRoom>> list(@PathVariable Long id) {
 		return DefaultResult.newResult(meetingRoomRepository.findAll());
 	}
 

@@ -56,8 +56,8 @@ public class TeamController {
 
 	// 根据团队 id 及 微信 openId 查询绑定的用户
 	@RequestMapping(path = "/team/{teamId}/user/{openId}", method = RequestMethod.GET)
-	public Result<User> getUser(@PathVariable(name = "teamId") Long id, @PathVariable(name = "openId") String openId) {
-		Team team = teamRepository.findOne(id);
+	public Result<User> getUser(@PathVariable(name = "teamId") Long teamId, @PathVariable(name = "openId") String openId) {
+		Team team = teamRepository.findOne(teamId);
 		Optional<User> optional = team.getUsers().stream().filter(s -> s.getOpenId().equals(openId)).findAny();
 		return optional.isPresent()? DefaultResult.newResult(optional.get()): DefaultResult.newFailResult("用户未绑定.");  
 	}
