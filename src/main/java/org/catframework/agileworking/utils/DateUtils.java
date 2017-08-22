@@ -24,11 +24,12 @@ public final class DateUtils {
 		}
 	}
 
-	public static final boolean isSameWeekday(Date d1, Date d2) {
-		Calendar cal1 = Calendar.getInstance();
-		cal1.setTime(d1);
-		Calendar cal2 = Calendar.getInstance();
-		cal2.setTime(d2);
-		return cal1.get(Calendar.DAY_OF_WEEK) == cal2.get(Calendar.DAY_OF_WEEK);
+	public static boolean isSameWeekOfday(Date d1, Date d2) {
+		Calendar d1Cal = Calendar.getInstance();
+		d1Cal.setTime(d1);
+		Calendar d2Cal = Calendar.getInstance();
+		d2Cal.setTime(d2);
+		return d1Cal.get(Calendar.DAY_OF_WEEK) == d2Cal.get(Calendar.DAY_OF_WEEK);
 	}
+
 }

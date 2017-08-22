@@ -81,8 +81,9 @@ public class ScheduleControllerTest {
 		p.setOpenId("7upcat_open_id");
 		scheduleController.join(s.getId(), p);
 		s = scheduleRepository.findOne(s.getId());
-		Assert.assertEquals(1, s.getParticipants().size());
-		Assert.assertEquals("7upcat", s.getParticipants().get(0).getNickName());
+		Assert.assertEquals(2, s.getParticipants().size());
+		Assert.assertEquals("七猫", s.getParticipants().get(0).getNickName());
+		Assert.assertEquals("7upcat", s.getParticipants().get(1).getNickName());
 		try {
 			scheduleController.join(s.getId(), p);
 			Assert.fail();

@@ -40,9 +40,6 @@ public class ScheduleController {
 		if (!schedule.getParticipants().stream().anyMatch((p) -> {
 			return p.getOpenId().equals(participant.getOpenId());
 		})) {
-			if (schedule.getCreatorOpenId().equals(participant.getOpenId())) {
-				throw new RuntimeException("您已加入过此会议啦.");
-			}
 			schedule.addParticipant(participant);
 			scheduleRepository.save(schedule);
 			return DefaultResult.newResult(schedule);

@@ -9,10 +9,11 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
-public class Participant implements Serializable{
+public class Participant implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
@@ -20,22 +21,22 @@ public class Participant implements Serializable{
 	@GeneratedValue
 	private Long id;
 
-	/** 排期 id.*/
-	@JsonIgnore //避免循环引用的问题，在序列号 JSON 是忽略掉此属性
+	/** 排期 id. */
+	@JsonIgnore // 避免循环引用的问题，在序列号 JSON 是忽略掉此属性
 	@ManyToOne
-    @JoinColumn(name="schedule_id")  
+	@JoinColumn(name = "schedule_id")
 	private Schedule schedule;
 
-	/** 参会人微信 openId.*/
+	/** 参会人微信 openId. */
 	private String openId;
-	
-	/** 参会人微信昵名.*/
+
+	/** 参会人微信昵名. */
 	private String nickName;
 
-	/** 参会人微信头像的链接.*/
+	/** 参会人微信头像的链接. */
 	private String avatarUrl;
-	
-	/** 参会日期.*/
+
+	/** 参会日期. */
 	private Date date;
 
 	public Long getId() {
@@ -78,6 +79,7 @@ public class Participant implements Serializable{
 		this.openId = openId;
 	}
 
+	@JsonFormat(pattern = "yyyy-MM-dd")
 	public Date getDate() {
 		return date;
 	}

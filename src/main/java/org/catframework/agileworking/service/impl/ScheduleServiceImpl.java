@@ -30,7 +30,7 @@ public class ScheduleServiceImpl implements ScheduleService {
 		weeklySchedules.stream().forEach((s1) -> {
 			if (schedules.stream().noneMatch((s2) -> s1.getId().equals(s2.getId()))) {
 				if (s1.getDate().compareTo(date) < 0) {
-					if (DateUtils.isSameWeekday(s1.getDate(), date)) {
+					if (DateUtils.isSameWeekOfday(s1.getDate(), date)) {
 						s1.setDate(date);
 						schedules.add(s1);
 					}
