@@ -3,11 +3,19 @@ package org.catframework.agileworking.vo;
 import java.math.BigInteger;
 import java.util.Date;
 
+import org.catframework.agileworking.domain.Schedule;
+import org.catframework.agileworking.domain.ScheduleRepository;
 import org.catframework.agileworking.utils.DateUtils;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
-public class ScheduleVO {
+/**
+ * 排期 {@link Schedule} 的值对象聚合了排期及会议室相关的信息.
+ * 
+ * @author devzzm
+ * @see ScheduleRepository#findScheules(String, Date)
+ */
+public class ScheduleVO implements Comparable<ScheduleVO> {
 
 	private BigInteger scheduleId;
 
@@ -100,6 +108,13 @@ public class ScheduleVO {
 		this.repeatMode = repeatMode;
 	}
 
+	/**
+	 * 判断当前的排期值对象是否同指定的日期具有相同的星期属性且排期日期小于指定的日期. <br>
+	 * 此方法用于查询本人某一日的排期清单使用.
+	 * 
+	 * @param date 指定日期
+	 * @return 当排期的日期同指定的日期的星期属性相同且日期小于指定的日期时返回 <code>true</code>
+	 */
 	public boolean isNeedInclude(Date date) {
 		if (getDate().equals(date)) {
 			return true;
@@ -109,5 +124,14 @@ public class ScheduleVO {
 			return false;
 		}
 		return DateUtils.isSameWeekOfday(date, getDate());
+	}
+
+	@Override
+	public int compareTo(ScheduleVO o) {
+		int result = getStartTime().compareTo(o.getStartTime());
+		if (result == 0) {
+			return getRoomNo().compareTo(o.getRoomNo());
+		}
+		return result;
 	}
 }

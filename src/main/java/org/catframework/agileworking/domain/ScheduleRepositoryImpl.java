@@ -30,18 +30,10 @@ public class ScheduleRepositoryImpl implements ScheduleRepositoryCustom {
 		SQLQuery query = session.createSQLQuery(sql);
 		List<ScheduleVO> scheduleVOs = query.setResultTransformer(Transformers.aliasToBean(ScheduleVO.class))
 				.setParameter(0, openId).setParameter(1, date).setParameter(2, openId).list();
-		return scheduleVOs.stream().filter(s -> {
-			return s.isNeedInclude(date);
-		}).map(s -> {
+		return scheduleVOs.stream().filter(s -> s.isNeedInclude(date)).map(s -> {
 			s.setDate(date);
 			return s;
-		}).sorted((s1, s2) -> {
-			int timeCompare = s1.getStartTime().compareTo(s2.getStartTime());
-			if (timeCompare == 0) {
-				return s1.getRoomNo().compareTo(s2.getRoomNo());
-			}
-			return timeCompare;
-		}).collect(Collectors.toList());
+		}).sorted().collect(Collectors.toList());
 	}
 
 	public void setEntityManager(EntityManager entityManager) {
