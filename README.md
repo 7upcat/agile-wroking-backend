@@ -26,12 +26,12 @@
 - 查询指定 `openId` 的用户是否有加入指定的团队  **GET** `/agileworking/team/{teamId}/user/{openId}`，如果加入则返回 `User` 信息
 
 - 加入指定的团队  **POST** `/agileworking/team/{id}/join`
- + name/姓名
- + mobileNo/手机号
- + openId/微信 openId
- + nickName/微信昵称
- + avatarUrl/微信头像 url
- + token/团队的加入口令 
+  + name/姓名
+  + mobileNo/手机号
+  + openId/微信 openId
+  + nickName/微信昵称
+  + avatarUrl/微信头像 url
+  + token/团队的加入口令 
 
 - 查询指定团队下的所有会议室列表  **GET** `/agileworking/meetingRooms/{teamId}`
 
