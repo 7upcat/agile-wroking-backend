@@ -3,9 +3,11 @@ package org.catframework.agileworking;
 import javax.sql.DataSource;
 
 import org.apache.tomcat.jdbc.pool.PoolProperties;
+import org.catframework.agileworking.web.support.AccessControlAllowOriginFilter;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 
 @SpringBootApplication
@@ -22,7 +24,15 @@ public class Application {
 	public PoolProperties poolProperties() {
 		return new PoolProperties();
 	}
-
+	
+	@Bean
+	public FilterRegistrationBean accessControlAllowOriginFilter(){
+		   FilterRegistrationBean registration = new FilterRegistrationBean();
+		   registration.setFilter(new AccessControlAllowOriginFilter());
+		   registration.addUrlPatterns("*");
+		   return registration;
+	}
+	
 	public static void main(String[] args) throws Exception {
 		SpringApplication.run(Application.class, args);
 	}
