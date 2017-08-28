@@ -9,6 +9,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 public class User implements Serializable {
 
@@ -34,6 +36,7 @@ public class User implements Serializable {
 	private String avatarUrl;
 
 	@ManyToMany(mappedBy="users")
+	@JsonIgnore
 	private List<Team> teams;
 	
 	public Long getId() {
