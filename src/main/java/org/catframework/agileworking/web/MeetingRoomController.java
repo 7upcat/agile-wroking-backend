@@ -36,7 +36,7 @@ public class MeetingRoomController {
 
 	@RequestMapping(path = "/meetingRooms/{id}", method = RequestMethod.GET)
 	public Result<List<MeetingRoom>> list(@PathVariable Long id) {
-		return DefaultResult.newResult(meetingRoomRepository.findAll());
+		return DefaultResult.newResult(meetingRoomRepository.findByTeamId(id));
 	}
 
 	/**

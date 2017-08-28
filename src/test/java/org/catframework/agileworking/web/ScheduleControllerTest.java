@@ -52,7 +52,7 @@ public class ScheduleControllerTest {
 	private User user = UserFactory.newDefaultUser();
 
 	private List<MeetingRoom> meetingRooms = MeetingRoomFactory.defaultMeetingRooms();
-
+	
 	@Before
 	public void before() {
 		userRepository.save(user);
@@ -72,7 +72,7 @@ public class ScheduleControllerTest {
 
 	@Test
 	public void testJoin() {
-		Result<List<MeetingRoom>> result = meetingRoomController.list(MeetingRoomFactory.DEFAULT_TEAM_ID);
+		Result<List<MeetingRoom>> result = meetingRoomController.list(team.getId());
 		Schedule s = ScheduleFactory.newWeeklySchedule("分行业务平台项目组临时会议", "七猫", "2017-08-02", "13:00", "14:00");
 		meetingRoomController.createOrUpdateSchedule(result.getPayload().get(0).getId(), s);
 		Participant p = new Participant();
@@ -95,7 +95,7 @@ public class ScheduleControllerTest {
 
 	@Test
 	public void testGet() {
-		Result<List<MeetingRoom>> result = meetingRoomController.list(MeetingRoomFactory.DEFAULT_TEAM_ID);
+		Result<List<MeetingRoom>> result = meetingRoomController.list(team.getId());
 		Schedule s = ScheduleFactory.newWeeklySchedule("分行业务平台项目组临时会议", "七猫", "2017-08-02", "13:00", "14:00");
 		Result<Schedule> sResult = meetingRoomController.createOrUpdateSchedule(result.getPayload().get(0).getId(), s);
 		Assert.assertTrue(sResult.isSuccess());

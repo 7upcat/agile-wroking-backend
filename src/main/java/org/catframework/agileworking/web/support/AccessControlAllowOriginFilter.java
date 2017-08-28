@@ -10,12 +10,13 @@ import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletResponse;
 
+/**
+ * 允许跨域访问的 filter.
+ * TODO 稍后重构，实际上这个应该应该是不需要支持跨域的
+ *
+ * @author devzzm
+ */
 public class AccessControlAllowOriginFilter implements Filter {
-
-	@Override
-	public void destroy() {
-
-	}
 
 	@Override
 	public void doFilter(ServletRequest req, ServletResponse rsp, FilterChain chain)
@@ -33,4 +34,8 @@ public class AccessControlAllowOriginFilter implements Filter {
 	public void init(FilterConfig arg0) throws ServletException {
 	}
 
+	@Override
+	public void destroy() {
+
+	}
 }
