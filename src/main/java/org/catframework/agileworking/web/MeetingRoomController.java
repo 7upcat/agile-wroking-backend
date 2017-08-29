@@ -103,9 +103,7 @@ public class MeetingRoomController {
 
 	private void validate(Long id, Schedule schedule) {
 		Assert.isTrue(schedule.getStartTime().compareTo(schedule.getEndTime()) < 0, "会议开始时间需小于结束时间.");
-		Assert.isTrue(!scheduleService.find(id, schedule.getDate()).stream().anyMatch((s) -> {
-			return s.isConflict(schedule);
-		}), "同已有排期冲突.");
+		Assert.isTrue(!scheduleService.find(id, schedule.getDate()).stream().anyMatch(s -> s.isConflict(schedule)), "同已有排期冲突.");
 	}
 
 	public void setMeetingRoomRepository(MeetingRoomRepository meetingRoomRepository) {
