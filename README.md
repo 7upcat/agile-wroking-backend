@@ -28,9 +28,9 @@
 
 - 【公开】查询团队列表，返回所有的团队 `/agileworking/teams`
 
-- 【公开】查询指定 `openId` 的用户是否有加入指定的团队  **GET** `/agileworking/team/{teamId}/user/{openId}`，如果加入则返回 `User` 信息
+- 【公开】查询指定 `openId` 的用户是否有加入指定的团队  **GET** `/agileworking/team/{teamId}/user/{openId}`，如果加入则返回 `User` 信息及 `token`
 
-- 【公开】加入指定的团队  **POST** `/agileworking/team/{id}/join`
+- 【公开】加入指定的团队  **POST** `/agileworking/team/{id}/join` ，加入成功会返回  `User` 及 `token`
 
   + name/姓名
   + mobileNo/手机号
