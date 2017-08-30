@@ -39,6 +39,7 @@ public class Team implements Serializable {
 	@JoinTable(name = "team_user_mapping", joinColumns = {
 			@JoinColumn(name = "team_id", referencedColumnName = "id") }, inverseJoinColumns = {
 					@JoinColumn(name = "user_id", referencedColumnName = "id") })
+	@JsonIgnore
 	private List<User> users = new ArrayList<>();
 
 	public Long getId() {

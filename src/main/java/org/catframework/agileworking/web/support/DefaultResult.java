@@ -1,5 +1,8 @@
 package org.catframework.agileworking.web.support;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.catframework.agileworking.BusinessException;
 import org.catframework.agileworking.common.ResponseCodes;
 
@@ -61,6 +64,8 @@ public class DefaultResult<T> implements Result<T> {
 	private DefaultResult() {
 	}
 
+	private Map<String, Object> headers = new HashMap<>();
+
 	private int status;
 
 	private T payload;
@@ -92,5 +97,21 @@ public class DefaultResult<T> implements Result<T> {
 	@Override
 	public T getPayload() {
 		return payload;
+	}
+
+	@Override
+	public Map<String, Object> getHeaders() {
+		return headers;
+	}
+
+	@Override
+	public Result<T> setHeader(String key, Object value) {
+		headers.put(key, value);
+		return this;
+	}
+
+	@Override
+	public Object getHeader(String key) {
+		return headers.get(key);
 	}
 }

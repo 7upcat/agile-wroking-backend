@@ -8,6 +8,7 @@ import org.catframework.agileworking.domain.TeamRepository;
 import org.catframework.agileworking.domain.User;
 import org.catframework.agileworking.domain.UserFactory;
 import org.catframework.agileworking.domain.UserRepository;
+import org.catframework.agileworking.service.WebTokenService;
 import org.catframework.agileworking.web.support.Result;
 import org.junit.Assert;
 import org.junit.Test;
@@ -28,6 +29,9 @@ public class TeamControllerTest {
 
 	@Autowired
 	private UserRepository userRepository;
+	
+	@Autowired
+	private WebTokenService webTokenService;
 
 	@Test
 	public void testJoin() {
@@ -35,7 +39,9 @@ public class TeamControllerTest {
 		User user = UserFactory.newDefaultUser();
 		userRepository.save(user);
 		team = teamRepository.findOne(team.getId());
-		teamController.join(team.getId(), user, team.getToken());
+		Result<User> result = teamController.join(team.getId(), user, team.getToken());
+		String token = (String) result.getHeader("token");
+		Assert.assertEquals(webTokenService.generate(user.getOpenId()), token);
 		team = teamRepository.findOne(team.getId());
 		Assert.assertEquals(1, team.getUsers().size());
 		team.getUsers().clear();
@@ -65,6 +71,8 @@ public class TeamControllerTest {
 		teamController.join(team.getId(), user, team.getToken());
 		result = teamController.getUser(team.getId(), user.getOpenId());
 		Assert.assertTrue(result.isSuccess());
+		String token = (String) result.getHeader("token");
+		Assert.assertEquals(webTokenService.generate(user.getOpenId()), token);
 		userRepository.delete(user);
 		teamRepository.delete(team);
 	}

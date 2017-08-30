@@ -7,6 +7,7 @@ import org.catframework.agileworking.domain.Team;
 import org.catframework.agileworking.domain.TeamRepository;
 import org.catframework.agileworking.domain.User;
 import org.catframework.agileworking.domain.UserRepository;
+import org.catframework.agileworking.service.WebTokenService;
 import org.catframework.agileworking.web.support.DefaultResult;
 import org.catframework.agileworking.web.support.Result;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,6 +28,9 @@ public class TeamController {
 	@Autowired
 	private UserRepository userRepository;
 
+	@Autowired
+	private WebTokenService webTokenService;
+
 	// 加入团队
 	@RequestMapping(path = "/team/{id}/join", method = RequestMethod.POST)
 	public Result<User> join(@PathVariable Long id, @RequestBody User user,
@@ -41,7 +45,7 @@ public class TeamController {
 		if (team.getUsers().stream().noneMatch(u -> user.getId().equals(u.getId()))) {
 			team.addUser(user);
 			teamRepository.save(team);
-			return DefaultResult.newResult(user);
+			return DefaultResult.newResult(user).setHeader("token", webTokenService.generate(user.getOpenId()));
 		} else {
 			throw new RuntimeException("不可重复加入团队.");
 		}
@@ -56,10 +60,12 @@ public class TeamController {
 
 	// 根据团队 id 及 微信 openId 查询绑定的用户
 	@RequestMapping(path = "/team/{teamId}/user/{openId}", method = RequestMethod.GET)
-	public Result<User> getUser(@PathVariable(name = "teamId") Long teamId, @PathVariable(name = "openId") String openId) {
+	public Result<User> getUser(@PathVariable(name = "teamId") Long teamId,
+			@PathVariable(name = "openId") String openId) {
 		Team team = teamRepository.findOne(teamId);
 		Optional<User> optional = team.getUsers().stream().filter(s -> s.getOpenId().equals(openId)).findAny();
-		return optional.isPresent()? DefaultResult.newResult(optional.get()): DefaultResult.newFailResult("用户未绑定.");  
+		return optional.isPresent() ? DefaultResult.newResult(optional.get()).setHeader("token",
+				webTokenService.generate(optional.get().getOpenId())) : DefaultResult.newFailResult("用户未绑定.");
 	}
 
 	public void setTeamRepository(TeamRepository teamRepository) {
