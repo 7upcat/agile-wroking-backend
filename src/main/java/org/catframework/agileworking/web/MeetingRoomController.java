@@ -46,12 +46,13 @@ public class MeetingRoomController {
 	 * @param schedule 新建的排期
 	 */
 	@RequestMapping(path = "/meetingRooms/{id}/schedule", method = RequestMethod.POST)
-	public synchronized Result<Schedule> createOrUpdateSchedule(@PathVariable Long id, @RequestBody Schedule schedule) {
+	public synchronized Result<Schedule> createOrUpdateSchedule(@PathVariable(name = "id") Long id,
+			@RequestParam(name = "formId") String formId, @RequestBody Schedule schedule) {
 		MeetingRoom meetingRoom = meetingRoomRepository.findOne(id);
 		validate(id, schedule);
 		if (null == schedule.getId()) {
 			schedule.setMeetingRoom(meetingRoom);
-			schedule.addParticipant(creatorAsParticipant(schedule));
+			schedule.addParticipant(creatorAsParticipant(schedule, formId));
 			scheduleRepository.save(schedule);
 		} else {
 			Schedule s = scheduleRepository.findOne(schedule.getId());
@@ -66,16 +67,17 @@ public class MeetingRoomController {
 		return DefaultResult.newResult(schedule);
 	}
 
-	private Participant creatorAsParticipant(Schedule schedule){
+	private Participant creatorAsParticipant(Schedule schedule,String formId){
 		Participant p = new Participant();
 		p.setAvatarUrl(schedule.getCreatorAvatarUrl());
 		p.setDate(schedule.getDate());
 		p.setNickName(schedule.getCreatorNickName());
 		p.setSchedule(schedule);
 		p.setOpenId(schedule.getCreatorOpenId());
+		p.setFormId(formId);
 		return p;
 	}
-	
+
 	/**
 	 * 取消已设置的排期.
 	 * 
@@ -103,7 +105,8 @@ public class MeetingRoomController {
 
 	private void validate(Long id, Schedule schedule) {
 		Assert.isTrue(schedule.getStartTime().compareTo(schedule.getEndTime()) < 0, "会议开始时间需小于结束时间.");
-		Assert.isTrue(!scheduleService.find(id, schedule.getDate()).stream().anyMatch(s -> s.isConflict(schedule)), "同已有排期冲突.");
+		Assert.isTrue(!scheduleService.find(id, schedule.getDate()).stream().anyMatch(s -> s.isConflict(schedule)),
+				"同已有排期冲突.");
 	}
 
 	public void setMeetingRoomRepository(MeetingRoomRepository meetingRoomRepository) {

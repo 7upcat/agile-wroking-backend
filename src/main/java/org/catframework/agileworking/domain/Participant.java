@@ -22,7 +22,7 @@ public class Participant implements Serializable {
 	private Long id;
 
 	/** 排期 id. */
-	@JsonIgnore // 避免循环引用的问题，在序列号 JSON 是忽略掉此属性
+	@JsonIgnore
 	@ManyToOne
 	@JoinColumn(name = "schedule_id")
 	private Schedule schedule;
@@ -38,6 +38,9 @@ public class Participant implements Serializable {
 
 	/** 参会日期. */
 	private Date date;
+
+	/** 参加会议表格提交的 formId 用于模板消息通知. */
+	private String formId;
 
 	public Long getId() {
 		return id;
@@ -86,5 +89,13 @@ public class Participant implements Serializable {
 
 	public void setDate(Date date) {
 		this.date = date;
+	}
+
+	public String getFormId() {
+		return formId;
+	}
+
+	public void setFormId(String formId) {
+		this.formId = formId;
 	}
 }

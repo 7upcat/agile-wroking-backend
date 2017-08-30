@@ -41,7 +41,7 @@
 
 - 【私有】查询指定团队下的所有会议室列表  **GET** `/agileworking/meetingRooms/{teamId}`
 
-- 【私有】创建/修改排期  **POST** `/agileworking/meetingRooms/{id}/schedule`
+- 【私有】创建/修改排期  **POST** `/agileworking/meetingRooms/{id}/schedule?formId=?`
   + id/排期id（可选，创建排期为空）
   + title/标题
   + date/日期 `yyyy-MM-dd` 格式
@@ -61,6 +61,7 @@
   + openId/接受邀请人微信 openId
   + nickName/接受邀请人微信昵称
   + avatarUrl/接受邀请人微信头像URL
+  + formId/表单 id ，用于后续的微信消息通知
 
 - 【私有】根据 `id` 查询指定的排期  **GET** `/agileworking/schedules/{id}`，含排期的参与人
   

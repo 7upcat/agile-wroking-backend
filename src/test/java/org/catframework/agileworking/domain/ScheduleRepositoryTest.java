@@ -67,7 +67,7 @@ public class ScheduleRepositoryTest {
 
 		Result<List<MeetingRoom>> result = meetingRoomController.list(MeetingRoomFactory.DEFAULT_TEAM_ID);
 		Schedule s = ScheduleFactory.newWeeklySchedule("分行业务平台项目组临时会议", "七猫", "2017-08-02", "13:00", "14:00");
-		meetingRoomController.createOrUpdateSchedule(result.getPayload().get(0).getId(), s);
+		meetingRoomController.createOrUpdateSchedule(result.getPayload().get(0).getId(),"fakeFormId", s);
 		Participant p = new Participant();
 		p.setDate(DateUtils.parse("2017-08-02", DateUtils.PATTERN_SIMPLE_DATE));
 		p.setAvatarUrl("some url");

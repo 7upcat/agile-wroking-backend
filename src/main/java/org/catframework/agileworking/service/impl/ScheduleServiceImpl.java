@@ -2,6 +2,7 @@ package org.catframework.agileworking.service.impl;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 import org.catframework.agileworking.domain.MeetingRoom;
@@ -10,8 +11,11 @@ import org.catframework.agileworking.domain.Schedule;
 import org.catframework.agileworking.domain.ScheduleRepository;
 import org.catframework.agileworking.service.ScheduleService;
 import org.catframework.agileworking.utils.DateUtils;
+import org.catframework.agileworking.utils.JsonUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.util.Assert;
+import org.springframework.web.client.RestTemplate;
 
 @Component
 public class ScheduleServiceImpl implements ScheduleService {
@@ -21,6 +25,16 @@ public class ScheduleServiceImpl implements ScheduleService {
 
 	@Autowired
 	private MeetingRoomRepository meetingRoomRepository;
+
+	private RestTemplate restTemplate = new RestTemplate();
+
+	private String appId;
+
+	private String appSecret;
+
+	private Long expireTime = 0L;
+
+	private String accessToken;
 
 	@Override
 	public List<Schedule> find(Long meetingRoomId, Date date) {
@@ -40,6 +54,22 @@ public class ScheduleServiceImpl implements ScheduleService {
 		// 按照开始时间进行排序
 		return schedules.stream().sorted((s1, s2) -> s1.getStartTime().compareTo(s2.getStartTime()))
 				.collect(Collectors.toList());
+	}
+
+	@Override
+	public synchronized void notify(Schedule schedule) {
+
+		if (null == accessToken || System.currentTimeMillis() > expireTime) {
+			Map<String, Object> result = JsonUtils.decode(restTemplate.getForObject(
+					"https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid={appId}&secret={appSecret}",
+					String.class, appId, appSecret));
+			this.accessToken = (String) result.get("access_token");
+			Assert.notNull(this.accessToken, "accessToken 获取失败!");
+			expireTime = System.currentTimeMillis() + 2 * 60 * 60 * 1000L;
+		}else {
+			
+		}
+
 	}
 
 	public void setScheduleRepository(ScheduleRepository scheduleRepository) {

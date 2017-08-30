@@ -43,23 +43,23 @@ public class ScheduleControllerTest {
 
 	@Autowired
 	private TeamRepository teamRepository;
-	
+
 	@Autowired
 	private UserRepository userRepository;
 
 	private Team team = TeamFactory.newDefaultTeam();
-	
+
 	private User user = UserFactory.newDefaultUser();
 
 	private List<MeetingRoom> meetingRooms = MeetingRoomFactory.defaultMeetingRooms();
-	
+
 	@Before
 	public void before() {
 		userRepository.save(user);
 		teamRepository.save(team);
 		team.addUser(user);
 		teamRepository.save(team);
-		meetingRooms.stream().forEach(m-> m.setTeamId(team.getId()));
+		meetingRooms.stream().forEach(m -> m.setTeamId(team.getId()));
 		meetingRoomRepository.save(meetingRooms);
 	}
 
@@ -74,16 +74,18 @@ public class ScheduleControllerTest {
 	public void testJoin() {
 		Result<List<MeetingRoom>> result = meetingRoomController.list(team.getId());
 		Schedule s = ScheduleFactory.newWeeklySchedule("分行业务平台项目组临时会议", "七猫", "2017-08-02", "13:00", "14:00");
-		meetingRoomController.createOrUpdateSchedule(result.getPayload().get(0).getId(), s);
+		meetingRoomController.createOrUpdateSchedule(result.getPayload().get(0).getId(), "fakeFormId", s);
 		Participant p = new Participant();
 		p.setAvatarUrl("some url");
 		p.setNickName("7upcat");
 		p.setOpenId("7upcat_open_id");
+		p.setFormId("fakeFormId");
 		scheduleController.join(s.getId(), p);
 		s = scheduleRepository.findOne(s.getId());
 		Assert.assertEquals(2, s.getParticipants().size());
 		Assert.assertEquals("七猫", s.getParticipants().get(0).getNickName());
 		Assert.assertEquals("7upcat", s.getParticipants().get(1).getNickName());
+		Assert.assertEquals("fakeFormId", s.getParticipants().get(1).getFormId());
 		try {
 			scheduleController.join(s.getId(), p);
 			Assert.fail();
@@ -97,7 +99,8 @@ public class ScheduleControllerTest {
 	public void testGet() {
 		Result<List<MeetingRoom>> result = meetingRoomController.list(team.getId());
 		Schedule s = ScheduleFactory.newWeeklySchedule("分行业务平台项目组临时会议", "七猫", "2017-08-02", "13:00", "14:00");
-		Result<Schedule> sResult = meetingRoomController.createOrUpdateSchedule(result.getPayload().get(0).getId(), s);
+		Result<Schedule> sResult = meetingRoomController.createOrUpdateSchedule(result.getPayload().get(0).getId(),
+				"fakeFormId", s);
 		Assert.assertTrue(sResult.isSuccess());
 		sResult = scheduleController.get(sResult.getPayload().getId());
 		Assert.assertNotNull(sResult);

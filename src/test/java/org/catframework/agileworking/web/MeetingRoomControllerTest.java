@@ -58,21 +58,22 @@ public class MeetingRoomControllerTest {
 		// 创建一个每周重复的排期
 		Schedule schedule1 = ScheduleFactory.newWeeklySchedule("分行业务平台项目组临时会议", "七猫", "2017-08-02", "09:00", "12:00");
 		try {
-			meetingRoomController.createOrUpdateSchedule(result.getPayload().get(0).getId(), schedule1);
+			meetingRoomController.createOrUpdateSchedule(result.getPayload().get(0).getId(), "fakeFormId", schedule1);
 			Assert.assertNotNull(schedule1.getId());
 			// 案例验证更新排期
 			schedule1.setTitle("分行业务平台项目组临时会议-修订后");
-			meetingRoomController.createOrUpdateSchedule(result.getPayload().get(0).getId(), schedule1);
+			meetingRoomController.createOrUpdateSchedule(result.getPayload().get(0).getId(), "fakeFormId", schedule1);
 			Schedule dbSchedule = scheduleRepository.findOne(schedule1.getId());
 			Assert.assertEquals(schedule1.getTitle(), dbSchedule.getTitle());
 			// 创建人默人参加会议
 			Assert.assertEquals(1, dbSchedule.getParticipants().size());
 			Assert.assertEquals(schedule1.getCreatorAvatarUrl(), dbSchedule.getParticipants().get(0).getAvatarUrl());
-			
+
 			// 当天时间有冲突的案例
 			Schedule schedule2 = ScheduleFactory.newSchedule("POS清算代码评审", "发哥", "2017-08-02", "10:00", "11:00");
 			try {
-				meetingRoomController.createOrUpdateSchedule(result.getPayload().get(0).getId(), schedule2);
+				meetingRoomController.createOrUpdateSchedule(result.getPayload().get(0).getId(), "fakeFormId",
+						schedule2);
 				Assert.fail();
 			} catch (Exception e) {
 				Assert.assertEquals("同已有排期冲突.", e.getMessage());
@@ -81,7 +82,8 @@ public class MeetingRoomControllerTest {
 			// 下周时间有冲突的案例
 			Schedule schedule3 = ScheduleFactory.newSchedule("POS清算代码评审", "发哥", "2017-08-09", "09:30", "15:00");
 			try {
-				meetingRoomController.createOrUpdateSchedule(result.getPayload().get(0).getId(), schedule3);
+				meetingRoomController.createOrUpdateSchedule(result.getPayload().get(0).getId(), "fakeFormId",
+						schedule3);
 				Assert.fail();
 			} catch (Exception e) {
 				Assert.assertEquals("同已有排期冲突.", e.getMessage());
@@ -97,7 +99,7 @@ public class MeetingRoomControllerTest {
 		Result<List<MeetingRoom>> result = meetingRoomController.list(MeetingRoomFactory.DEFAULT_TEAM_ID);
 		// 创建一个每周重复的排期
 		Schedule s = ScheduleFactory.newWeeklySchedule("分行业务平台项目组临时会议", "七猫", "2017-08-02", "13:00", "14:00");
-		meetingRoomController.createOrUpdateSchedule(result.getPayload().get(0).getId(), s);
+		meetingRoomController.createOrUpdateSchedule(result.getPayload().get(0).getId(), "fakeFormId", s);
 		Assert.assertNotNull(scheduleRepository.findOne(s.getId()));
 		meetingRoomController.cancelSchedule(s.getId());
 		Assert.assertNull(scheduleRepository.findOne(s.getId()));
@@ -108,9 +110,9 @@ public class MeetingRoomControllerTest {
 		Result<List<MeetingRoom>> result = meetingRoomController.list(MeetingRoomFactory.DEFAULT_TEAM_ID);
 		// 创建一个每周重复的排期
 		Schedule schedule1 = ScheduleFactory.newWeeklySchedule("分行业务平台项目组临时会议", "七猫", "2017-08-02", "13:00", "14:00");
-		meetingRoomController.createOrUpdateSchedule(result.getPayload().get(0).getId(), schedule1);
+		meetingRoomController.createOrUpdateSchedule(result.getPayload().get(0).getId(), "fakeFormId", schedule1);
 		Schedule schedule2 = ScheduleFactory.newWeeklySchedule("CPOS临时例会", "发哥", "2017-08-09", "14:00", "16:00");
-		meetingRoomController.createOrUpdateSchedule(result.getPayload().get(0).getId(), schedule2);
+		meetingRoomController.createOrUpdateSchedule(result.getPayload().get(0).getId(), "fakeFormId", schedule2);
 		try {
 			Result<List<Schedule>> schedulesResult = meetingRoomController.schedules(result.getPayload().get(0).getId(),
 					DateUtils.parse("2017-08-09", DateUtils.PATTERN_SIMPLE_DATE));

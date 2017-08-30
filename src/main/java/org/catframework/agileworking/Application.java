@@ -8,13 +8,14 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
+import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 
 @SpringBootApplication
+@EnableScheduling
 public class Application extends WebMvcConfigurerAdapter {
 
-	// TODO 目前应用的代码和数据源的实现强关联，但是好像不这样所有的参数并不能生效
 	@Bean
 	public DataSource dataSource() {
 		return new org.apache.tomcat.jdbc.pool.DataSource(poolProperties());

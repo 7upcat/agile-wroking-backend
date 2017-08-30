@@ -64,9 +64,9 @@ public class ScheduleServiceImplTest {
 		Schedule s2 = ScheduleFactory.newWeeklySchedule("分行业务平台项目组临时会议", "七猫", "2017-08-02", "12:00", "14:00");
 		Schedule s3 = ScheduleFactory.newSchedule("分行业务平台项目组临时会议", "七猫", "2017-08-16", "14:00", "16:00");
 		try {
-			meetingRoomController.createOrUpdateSchedule(meetingRooms.get(0).getId(), s1);
-			meetingRoomController.createOrUpdateSchedule(meetingRooms.get(0).getId(), s2);
-			meetingRoomController.createOrUpdateSchedule(meetingRooms.get(0).getId(), s3);
+			meetingRoomController.createOrUpdateSchedule(meetingRooms.get(0).getId(),"fakeFormId" ,s1);
+			meetingRoomController.createOrUpdateSchedule(meetingRooms.get(0).getId(),"fakeFormId",s2);
+			meetingRoomController.createOrUpdateSchedule(meetingRooms.get(0).getId(),"fakeFormId",s3);
 			Result<List<Schedule>> result = meetingRoomController.schedules(meetingRooms.get(0).getId(),
 					DateUtils.parse("2017-08-09", DateUtils.PATTERN_SIMPLE_DATE));
 			assertEquals(2, result.getPayload().size());
