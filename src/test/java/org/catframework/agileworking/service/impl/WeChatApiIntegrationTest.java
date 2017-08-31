@@ -7,6 +7,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.catframework.agileworking.utils.JsonUtils;
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Value;
@@ -15,10 +16,8 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.web.client.RestTemplate;
 
 /**
- * 集成测试，需要提供 form_id 才可以进行测试.
- * 
+ * 集成测试验证，需要提供 form_id 才可以进行测试.
  * @author devzzm
- *
  */
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -39,8 +38,8 @@ public class WeChatApiIntegrationTest {
 
 	private RestTemplate restTemplate = new RestTemplate();
 
-	@Test
-	public void testGetSecretToken() {
+	@Before
+	public void init() {
 		String result = restTemplate.getForObject(
 				"https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid={appId}&secret={appSecret}",
 				String.class, appId, appSecret);
@@ -51,10 +50,11 @@ public class WeChatApiIntegrationTest {
 	@Test
 	public void testSendMessage() {
 		Map<String, Object> request = new HashMap<>();
+		// TODO 目标用户的 openId 需要按实际指定
 		request.put("touser", "oFb4O0XMZrijTGa_5kli4E6shEV0");
 		request.put("template_id", templateId);
 		// TODO 后续验证需要提供 from_id才可以进行
-		request.put("form_id", "");
+		request.put("form_id", "1504144250621");
 		Map<String, Object> data = new HashMap<>();
 		Map<String, Object> keyword1 = new HashMap<>();
 		keyword1.put("value", "11111");

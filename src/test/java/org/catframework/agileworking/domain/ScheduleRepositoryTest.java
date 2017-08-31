@@ -83,7 +83,7 @@ public class ScheduleRepositoryTest {
 		} catch (Exception e) {
 			Assert.assertEquals("您已加入过此会议啦.", e.getMessage());
 		}
-		List<ScheduleVO> scheduleVOs=scheduleRepository.findScheules("7upcat_open_id",DateUtils.parse("2017-08-09", DateUtils.PATTERN_SIMPLE_DATE));
+		List<ScheduleVO> scheduleVOs=scheduleRepository.findByOpenIdAndDate("7upcat_open_id",DateUtils.parse("2017-08-09", DateUtils.PATTERN_SIMPLE_DATE));
 		Assert.assertEquals(1, scheduleVOs.size());
 		scheduleRepository.delete(s);
 	}

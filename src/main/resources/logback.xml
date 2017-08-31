@@ -22,6 +22,10 @@
 
 	<!-- 日志中显示 sql 的值便于问题排查. -->
 	<logger name="org.hibernate.type" level="trace" />
+	
+	<!-- 忽略掉DEBUG级别的初始化异常. -->
+	<logger name="org.springframework.scheduling.annotation.ScheduledAnnotationBeanPostProcessor" level="info" />
+	
 	<root level="DEBUG">
 		<appender-ref ref="ROLLING" />
 		<appender-ref ref="STDOUT" />

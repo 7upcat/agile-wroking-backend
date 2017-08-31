@@ -13,7 +13,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
  * 排期 {@link Schedule} 的值对象聚合了排期及会议室相关的信息.
  * 
  * @author devzzm
- * @see ScheduleRepository#findScheules(String, Date)
+ * @see ScheduleRepository#findByOpenIdAndDate(String, Date)
  */
 public class ScheduleVO implements Comparable<ScheduleVO> {
 

@@ -15,6 +15,11 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
 
+/**
+ * 自定义拦截器实现了 WebToken 的校验以及支持浏览器的跨域访问功能.
+ * 
+ * @author devzzm
+ */
 public class WebTokenHandlerInterceptor implements HandlerInterceptor {
 
 	@Autowired
@@ -23,7 +28,7 @@ public class WebTokenHandlerInterceptor implements HandlerInterceptor {
 	private String[] ignoreUriPatterns;
 
 	private PathMatcher pathMatcher = new AntPathMatcher();
-	
+
 	private String tokenKey = "Authorization";
 
 	private String subjectKey = "Subject";

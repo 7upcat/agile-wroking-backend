@@ -87,6 +87,7 @@ public class Participant implements Serializable {
 		return date;
 	}
 
+	@JsonFormat(pattern = "yyyy-MM-dd")
 	public void setDate(Date date) {
 		this.date = date;
 	}

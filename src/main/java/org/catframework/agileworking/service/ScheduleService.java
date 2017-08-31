@@ -15,11 +15,4 @@ public interface ScheduleService {
 	 * @return 符合条件的排期列表
 	 */
 	List<Schedule> find(Long meetingRoomId, Date date);
-
-	/**
-	 * 发送通知给指定的参加某个排期会议
-	 * 
-	 * @param schedule 指定排期
-	 */
-	void notify(Schedule schedule);
 }

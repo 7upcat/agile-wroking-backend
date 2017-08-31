@@ -19,5 +19,13 @@ public interface ScheduleRepositoryCustom {
 	 * @param date 查询的日期
 	 * @return 符合条件的排期值对象
 	 */
-	List<ScheduleVO> findScheules(String openId, Date date);
+	List<ScheduleVO> findByOpenIdAndDate(String openId, Date date);
+	
+	
+	/**
+	 * 查询指定日期所有的排期
+	 * @param date 查询的日期
+	 * @return 符合条件的排期值对象
+	 */
+	List<ScheduleVO> findByDate(Date date);
 }

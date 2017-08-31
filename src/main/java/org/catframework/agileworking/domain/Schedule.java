@@ -100,6 +100,7 @@ public class Schedule implements Serializable, Comparable<Schedule> {
 		return date;
 	}
 
+	@JsonFormat(pattern = "yyyy-MM-dd")
 	public void setDate(Date date) {
 		this.date = date;
 	}

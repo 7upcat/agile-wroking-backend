@@ -9,11 +9,11 @@ import org.catframework.agileworking.domain.Participant;
 import org.catframework.agileworking.domain.Schedule;
 import org.catframework.agileworking.domain.ScheduleRepository;
 import org.catframework.agileworking.service.ScheduleService;
+import org.catframework.agileworking.utils.DateUtils;
 import org.catframework.agileworking.web.support.DefaultResult;
 import org.catframework.agileworking.web.support.Result;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
-import org.springframework.format.annotation.DateTimeFormat.ISO;
 import org.springframework.util.Assert;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -99,7 +99,7 @@ public class MeetingRoomController {
 	 */
 	@RequestMapping(path = "/meetingRooms/{id}/schedule", method = RequestMethod.GET)
 	public Result<List<Schedule>> schedules(@PathVariable Long id,
-			@RequestParam(name = "date") @DateTimeFormat(iso = ISO.DATE) Date date) {
+			@RequestParam(name = "date") @DateTimeFormat(pattern=DateUtils.PATTERN_SIMPLE_DATE) Date date) {
 		return DefaultResult.newResult(scheduleService.find(id, date));
 	}
 

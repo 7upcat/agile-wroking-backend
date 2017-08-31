@@ -24,6 +24,15 @@ public final class DateUtils {
 		}
 	}
 
+	public static final String format(Date date, String pattern) {
+		return new SimpleDateFormat(pattern).format(date);
+	}
+	
+	/**
+	 * 判断指定的两个日期的所属的星期是否相同.
+	 * 
+	 * @return 当两个日期相同时返回 <code>true</code>
+	 */
 	public static boolean isSameWeekOfday(Date d1, Date d2) {
 		Calendar d1Cal = Calendar.getInstance();
 		d1Cal.setTime(d1);
