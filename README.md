@@ -19,8 +19,9 @@
 
 ## 单元测试
 
-进行单元测试前在 *src/main/resources/application.properties*  中设置 profile  `spring.profiles.active=prd`，将会自动连接测试的数据库，并在每个
+- 进行单元测试前在 *src/main/resources/application.properties*  中设置 profile  `spring.profiles.active=dev`，将会自动连接测试的数据库，并在每个
 案例执行前重新建表
+- 进行单元测试 `mvn test`
 
 ## 接口清单
 
