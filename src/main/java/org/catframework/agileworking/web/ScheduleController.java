@@ -33,6 +33,7 @@ public class ScheduleController {
 	@RequestMapping(path = "/schedules/{id}/join", method = RequestMethod.POST)
 	public Result<Schedule> join(@PathVariable Long id, @RequestBody Participant participant) {
 		Schedule schedule = scheduleRepository.findOne(id);
+		// 根据 MeetingRoom 找到 Team 找到其下的 Users 判断是否当前用户已加入其中
 		Optional<User> user = teamRepository
 				.findOne(meetingRoomRepository.findOne(schedule.getMeetingRoom().getId()).getTeamId()).getUsers()
 				.stream().filter(s -> s.getOpenId().equals(participant.getOpenId())).findAny();
@@ -52,5 +53,17 @@ public class ScheduleController {
 	public Result<Schedule> get(@PathVariable Long id) {
 		Schedule schedule = scheduleRepository.findOne(id);
 		return DefaultResult.newResult(schedule);
+	}
+
+	public void setScheduleRepository(ScheduleRepository scheduleRepository) {
+		this.scheduleRepository = scheduleRepository;
+	}
+
+	public void setMeetingRoomRepository(MeetingRoomRepository meetingRoomRepository) {
+		this.meetingRoomRepository = meetingRoomRepository;
+	}
+
+	public void setTeamRepository(TeamRepository teamRepository) {
+		this.teamRepository = teamRepository;
 	}
 }

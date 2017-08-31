@@ -120,4 +120,5 @@ public class MeetingRoomController {
 	public void setScheduleService(ScheduleService scheduleService) {
 		this.scheduleService = scheduleService;
 	}
+	
 }

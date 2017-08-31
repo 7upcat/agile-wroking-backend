@@ -16,7 +16,7 @@ import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
 
 /**
- * 自定义拦截器实现了 WebToken 的校验以及支持浏览器的跨域访问功能.
+ * 自定义拦截器实现了 WebToken 的校验.
  * 
  * @author devzzm
  */
@@ -53,17 +53,10 @@ public class WebTokenHandlerInterceptor implements HandlerInterceptor {
 		return Arrays.asList(ignoreUriPatterns).stream().anyMatch(p -> pathMatcher.match(p, uri));
 	}
 
-	/**
-	 * TODO 暂时把允许跨域访问的逻辑写在此，实际 PRD 中应该不允许跨域访问.
-	 */
 	@Override
 	public void afterCompletion(HttpServletRequest req, HttpServletResponse resp, Object handler, Exception e)
 			throws Exception {
-		resp.setHeader("Access-Control-Allow-Origin", "*");
-		resp.setHeader("Access-Control-Allow-Methods", "POST, GET, OPTIONS, DELETE");
-		resp.setHeader("Access-Control-Max-Age", "3600");
-		resp.setHeader("Access-Control-Allow-Headers", "x-requested-with,Authorization");
-		resp.setHeader("Access-Control-Allow-Credentials", "true");
+		// do nothing
 	}
 
 	@Override

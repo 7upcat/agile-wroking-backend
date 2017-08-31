@@ -20,11 +20,11 @@ import org.springframework.web.bind.annotation.ResponseBody;
 public class GlobalExceptionHandler {
 
 	private static final Log logger = LogFactory.getLog(GlobalExceptionHandler.class);
-	
+
 	@ExceptionHandler({ BusinessException.class, Exception.class })
 	@ResponseBody
 	ResponseEntity<?> handleControllerException(HttpServletRequest request, Throwable ex) {
-		logger.error("handle exception:",ex);
+		logger.error("handle exception:", ex);
 		return new ResponseEntity<>(DefaultResult.newFailResult(ex), HttpStatus.INTERNAL_SERVER_ERROR);
 	}
 }

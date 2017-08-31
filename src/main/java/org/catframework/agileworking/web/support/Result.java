@@ -55,10 +55,11 @@ public interface Result<T> {
 	 * @return 当前结果对象
 	 */
 	Result<T> setHeader(String key, Object value);
-	
+
 	/**
 	 * 取指定 key 的头的值
-	 * @param key 取值的 key 
+	 * 
+	 * @param key 取值的 key
 	 * @return header 的值
 	 */
 	Object getHeader(String key);

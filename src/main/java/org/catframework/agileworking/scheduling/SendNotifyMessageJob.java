@@ -24,6 +24,8 @@ import org.springframework.web.client.RestTemplate;
 /**
  * 发送会议通知，每60秒轮训一次，在会前 15 分钟发送提醒，目前的实现比较简单仅在内存中增加了缓存来存放已发送的排期.
  * 
+ * 提示：目前版本只考虑了单 JVM 环境运行，作业调度未考虑并发的问题，如果运行在集群环境下，需要修改此类.
+ * 
  * @author devzzm
  */
 @Component
@@ -75,16 +77,20 @@ public class SendNotifyMessageJob {
 				return;
 			}
 			if (isNeedSendMessageNow(s)) {
-				Schedule schedule = scheduleRepository.findOne(new Long(s.getScheduleId().intValue()));
-				User creator = userRepository.findOneByOpenId(s.getOpenId());
-				schedule.getParticipants().stream().forEach(p -> {
-					NotifyMessageTemplate template = new NotifyMessageTemplate(creator, schedule, p, templateId);
-					String result = restTemplate.postForObject(sendMessageUrl, template.toTemplateMessage(),
-							String.class, accessToken);
-					logger.info("send notify message result is :" + result);
-				});
-				cache.add(schedule.getId());
+				doSend(accessToken, s);
+				cache.add(new Long(s.getScheduleId().intValue()));
 			}
+		});
+	}
+
+	private void doSend(String accessToken, ScheduleVO s) {
+		Schedule schedule = scheduleRepository.findOne(new Long(s.getScheduleId().intValue()));
+		User creator = userRepository.findOneByOpenId(s.getOpenId());
+		schedule.getParticipants().stream().forEach(p -> {
+			NotifyMessageTemplate template = new NotifyMessageTemplate(creator, schedule, p, templateId);
+			String result = restTemplate.postForObject(sendMessageUrl, template.toTemplateMessage(), String.class,
+					accessToken);
+			logger.info("send notify message result is :" + result);
 		});
 	}
 

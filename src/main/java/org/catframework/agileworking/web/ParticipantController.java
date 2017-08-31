@@ -24,7 +24,7 @@ public class ParticipantController {
 
 	@RequestMapping(path = "/participant/{openId}", method = RequestMethod.GET)
 	public Result<List<ScheduleVO>> participants(@PathVariable String openId,
-			@RequestParam(name = "date") @DateTimeFormat(pattern=DateUtils.PATTERN_SIMPLE_DATE) Date date) {
+			@RequestParam(name = "date") @DateTimeFormat(pattern = DateUtils.PATTERN_SIMPLE_DATE) Date date) {
 		return DefaultResult.newResult(scheduleRepository.findByOpenIdAndDate(openId, date));
 	}
 }

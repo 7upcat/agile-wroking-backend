@@ -41,7 +41,6 @@ public class TeamController {
 		if (user.getId() == null) {
 			userRepository.save(user);
 		}
-
 		if (team.getUsers().stream().noneMatch(u -> user.getId().equals(u.getId()))) {
 			team.addUser(user);
 			teamRepository.save(team);
@@ -64,8 +63,12 @@ public class TeamController {
 			@PathVariable(name = "openId") String openId) {
 		Team team = teamRepository.findOne(teamId);
 		Optional<User> optional = team.getUsers().stream().filter(s -> s.getOpenId().equals(openId)).findAny();
-		return optional.isPresent() ? DefaultResult.newResult(optional.get()).setHeader("token",
-				webTokenService.generate(optional.get().getOpenId())) : DefaultResult.newFailResult("用户未绑定.");
+		if (optional.isPresent()) {
+			String token = webTokenService.generate(optional.get().getOpenId());
+			return DefaultResult.newResult(optional.get()).setHeader("token", token);
+		} else {
+			return DefaultResult.newFailResult("用户未绑定.");
+		}
 	}
 
 	public void setTeamRepository(TeamRepository teamRepository) {
@@ -74,5 +77,9 @@ public class TeamController {
 
 	public void setUserRepository(UserRepository userRepository) {
 		this.userRepository = userRepository;
+	}
+
+	public void setWebTokenService(WebTokenService webTokenService) {
+		this.webTokenService = webTokenService;
 	}
 }
