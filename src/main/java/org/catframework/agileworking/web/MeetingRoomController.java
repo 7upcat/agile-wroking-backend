@@ -47,7 +47,7 @@ public class MeetingRoomController {
 	 */
 	@RequestMapping(path = "/meetingRooms/{id}/schedule", method = RequestMethod.POST)
 	public synchronized Result<Schedule> createOrUpdateSchedule(@PathVariable(name = "id") Long id,
-			@RequestParam(name = "formId") String formId, @RequestBody Schedule schedule) {
+			@RequestParam(name = "formId",required = false) String formId, @RequestBody Schedule schedule) {
 		MeetingRoom meetingRoom = meetingRoomRepository.findOne(id);
 		validate(id, schedule);
 		if (null == schedule.getId()) {
