@@ -27,6 +27,8 @@
 
 接口设计遵循 *Restful* 风格的  **API**，**公开** 标签下的服务可以直接访问，**私有** 标签的服务必须在  http header 中指定  `Authorization`（Token） 及 `Subject`（微信 openId）：
 
+- 【公开】通过 `jsCode` 获取用户的  `openId`  `/agileworking/wechat/openid/{jsCode}`，成功查询 payload 中返回的即是 openId
+
 - 【公开】查询团队列表，返回所有的团队 `/agileworking/teams`
 
 - 【公开】查询指定 `openId` 的用户是否有加入指定的团队  **GET** `/agileworking/team/{teamId}/user/{openId}`，如果加入则返回 `User` 信息及 `token`

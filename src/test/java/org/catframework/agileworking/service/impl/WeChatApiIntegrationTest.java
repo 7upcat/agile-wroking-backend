@@ -81,4 +81,20 @@ public class WeChatApiIntegrationTest {
 				String.class, accessToken);
 		logger.info(result);
 	}
+	
+
+	public static void main(String[] args) {
+		Map<String,Object >  data = new HashMap<>();
+		data.put("REQUEST_MESSAGE", "2222");
+		new RestTemplate().postForObject(
+				"http://localhost:8080/MOBX-ANTD-ADMIN/loginProcess.json?REQUEST_MESSAGE=2222", data,String.class);
+	}
 }
+
+
+
+
+
+
+
+
