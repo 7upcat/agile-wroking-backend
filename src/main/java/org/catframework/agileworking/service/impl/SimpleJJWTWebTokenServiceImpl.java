@@ -12,8 +12,8 @@ import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.impl.crypto.MacProvider;
 
 /**
- * 使用 JJWT 做为 WebToken 的实现.
- * 
+ * 使用 JJWT 做为 WebToken 的实现，当前的实现每次服务启动都生成一个新的 key，且不支持集群环境下使用，后续考虑配置文件或者数据库的方式.
+ *  
  * @author devzzm
  */
 @Component
