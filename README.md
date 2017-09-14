@@ -1,7 +1,14 @@
 # agile-wroking-backend
 
-*AgileWorking* 小程序的后端，基于 *SpringBoot* 实现，使用  *JJWT* 来进行会话跟踪。
+ 此项目是 *real world* 小程序 *AgileWorking* 应用的后端，*AgileWorking* 是一个用于部门内部会议室及团队管理的小程序，可以在微信中查询找到。
 
+## 特色
+
+- 使用 *SpringBoot* 构建，*Convension Over Configuration*，零配置
+- 采用关系型数据库 mysql，使用 spring-data-jpa 实现领域模型的数据持久化
+- 提供  *restful* 风格的  API 供访问，支持完善的会话管理功能
+- 支持作业调度并支持小程序消息模板发送消息
+  
 ## 构建
 
 ### 前置条件
