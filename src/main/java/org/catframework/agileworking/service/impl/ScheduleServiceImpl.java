@@ -26,7 +26,8 @@ public class ScheduleServiceImpl implements ScheduleService {
 	public List<Schedule> find(Long meetingRoomId, Date date) {
 		MeetingRoom meetingRoom = meetingRoomRepository.findOne(meetingRoomId);
 		List<Schedule> schedules = scheduleRepository.findByMeetingRoomAndDate(meetingRoom, date);
-		List<Schedule> weeklySchedules = scheduleRepository.findByRepeatMode(Schedule.REPEAT_MODE_WEEKLY);
+		List<Schedule> weeklySchedules = scheduleRepository.findByMeetingRoomAndRepeatMode(meetingRoom,
+				Schedule.REPEAT_MODE_WEEKLY);
 		weeklySchedules.stream().forEach((s1) -> {
 			if (schedules.stream().noneMatch((s2) -> s1.getId().equals(s2.getId()))) {
 				if (s1.getDate().compareTo(date) < 0) {
