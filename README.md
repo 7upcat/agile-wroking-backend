@@ -1,13 +1,14 @@
 # agile-wroking-backend
 
- 此项目是 *real world* 小程序 *AgileWorking* 应用的后端，*AgileWorking* 是一个用于部门内部会议室及团队管理的小程序，可以在微信中查询找到。
+ 此项目是  *real world* 小程序 *AgileWorking* 应用的后端，*AgileWorking* 是一个用于部门内部会议室及团队管理的小程序。
 
 ## 特色
 
+- 全面使用 *Java8* 函数式编码风格，代码简洁、高效，易读
+- 采用 [领域模型设计](https://en.wikipedia.org/wiki/Domain-driven_design) 的风格组织代码，应对复杂逻辑
 - 使用 *SpringBoot* 构建，*Convension Over Configuration*，零配置
-- 采用关系型数据库 mysql，使用 spring-data-jpa 实现领域模型的数据持久化
-- 提供  *restful* 风格的  API 供访问，支持完善的会话管理功能
-- 支持作业调度并支持小程序消息模板发送消息
+- 提供  *Restful* 风格的  API 供访问，支持完善的会话管理功能
+- 实现了小程序跟踪及会话管理的
   
 ## 构建
 
