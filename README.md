@@ -1,6 +1,6 @@
 # agile-wroking-backend
 
- 此项目是  *real world* 小程序 *AgileWorking* 应用的后端，*AgileWorking* 是一个用于部门内部会议室及团队管理的小程序。
+ 此项目是  *real world* 小程序 *AgileWorking* 应用的后端，*AgileWorking* 是一个用于部门内部会议室及团队管理的小程序，小程序的前端实现 可以访问此项目 [agile-working](https://github.com/wufajin/agile-working-1.0.0)。
 
 ## 特色
 
