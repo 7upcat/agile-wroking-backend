@@ -57,7 +57,7 @@ public class ScheduleController {
 	public Result<Schedule> get(@PathVariable Long id) {
 		Schedule schedule = scheduleRepository.findOne(id);
 		User user = userRepository.findOneByOpenId(schedule.getCreatorOpenId());
-		schedule.setCreatorNickName(schedule.getCreatorNickName()+"("+user.getName()+"/"+user.getMobileNo()+")");
+		schedule.setCreatorNickName(schedule.getCreatorNickName()+"/"+user.getName());
 		return DefaultResult.newResult(schedule);
 	}
 

@@ -108,7 +108,7 @@ public class MeetingRoomController {
 			@RequestParam(name = "date") @DateTimeFormat(pattern = DateUtils.PATTERN_SIMPLE_DATE) Date date) {
 		return DefaultResult.newResult(scheduleService.find(id, date).stream().map(s -> {
 			User user = userRepository.findOneByOpenId(s.getCreatorOpenId());
-			s.setCreatorNickName(s.getCreatorNickName() + "(" + user.getName() + "/" + user.getMobileNo() + ")");
+			s.setCreatorNickName(s.getCreatorNickName() + "/" + user.getName());
 			return s;
 		}).collect(Collectors.toList()));
 	}
