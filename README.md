@@ -50,6 +50,8 @@
   + avatarUrl/微信头像 url
   + token/团队的加入口令 
 
+- 【公开】根据 `id` 查询指定的排期  **GET** `/agileworking/schedules/{id}`，含排期的参与人，此接口用于邀请其他用户打开小程序时使用，暂时放开为公共，后续待前端优化后修改回私有
+
 - 【私有】查询指定团队下的所有会议室列表  **GET** `/agileworking/meetingRooms/{teamId}`
 
 - 【私有】创建/修改排期  **POST** `/agileworking/meetingRooms/{id}/schedule?formId=?`
@@ -73,8 +75,6 @@
   + nickName/接受邀请人微信昵称
   + avatarUrl/接受邀请人微信头像URL
   + formId/表单 id ，用于后续的微信消息通知
-
-- 【私有】根据 `id` 查询指定的排期  **GET** `/agileworking/schedules/{id}`，含排期的参与人
   
 - 【私有】查询加入的会议  **GET** `/agileworking/participant/{openId}?date=yyyyMMdd`
 
@@ -84,6 +84,6 @@
   +  title/会议主题
   +  openId/参会人的微信 openId
   +  roomNo/会议室
-  +  start_time/开始时间
+  +  startTime/开始时间
   +  endTime/结束时间 
   +  repeatMode/会议重复模式（N-不重复/W-每周）  
