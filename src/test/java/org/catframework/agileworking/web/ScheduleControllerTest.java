@@ -98,7 +98,7 @@ public class ScheduleControllerTest {
 	@Test
 	public void testGet() {
 		Result<List<MeetingRoom>> result = meetingRoomController.list(team.getId());
-		Schedule s = ScheduleFactory.newWeeklySchedule("分行业务平台项目组临时会议", "七猫", "2017-08-02", "13:00", "14:00");
+		Schedule s = ScheduleFactory.newWeeklySchedule("分行业务平台项目组临时会议", "7upcat_open_id", "2017-08-02", "13:00", "14:00");
 		Result<Schedule> sResult = meetingRoomController.createOrUpdateSchedule(result.getPayload().get(0).getId(),
 				"fakeFormId", s);
 		Assert.assertTrue(sResult.isSuccess());

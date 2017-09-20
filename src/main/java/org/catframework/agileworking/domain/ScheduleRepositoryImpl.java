@@ -40,7 +40,7 @@ public class ScheduleRepositoryImpl implements ScheduleRepositoryCustom {
 	@Transactional
 	@Override
 	public List<ScheduleVO> findByDate(Date date) {
-		String sql = "select  t.schedule_id as scheduleId  ,t.date,t.meeting_room_id  as meetingRoomId,t.title,t.open_id as openId,m.room_no as roomNo,t.start_time as startTime,t.end_time as endTime, t.repeat_mode as repeatMode   from (select  p.schedule_id,p.date,s.meeting_room_id,s.title,p.open_id,s.start_time,s.end_time,s.repeat_mode from participant p left join  schedule  s on    p.schedule_id = s.id  ) as t left join meeting_room m on t.meeting_room_id  = m.id  where (t.date=?) or (repeat_mode='W')";
+		String sql = "select  t.schedule_id as scheduleId  ,t.date,t.meeting_room_id  as meetingRoomId,t.title,t.open_id as openId,m.room_no as roomNo,t.start_time as startTime,t.end_time as endTime, t.repeat_mode as repeatMode   from (select  p.schedule_id,p.date,s.meeting_room_id,s.title, s.creator_open_id open_id,s.start_time,s.end_time,s.repeat_mode from participant p left join  schedule  s on    p.schedule_id = s.id  ) as t left join meeting_room m on t.meeting_room_id  = m.id  where (t.date=?) or (repeat_mode='W')";
 		Session session = entityManager.unwrap(org.hibernate.Session.class);
 		SQLQuery query = session.createSQLQuery(sql);
 		@SuppressWarnings("unchecked")

@@ -8,6 +8,9 @@ import org.catframework.agileworking.domain.MeetingRoomRepository;
 import org.catframework.agileworking.domain.Schedule;
 import org.catframework.agileworking.domain.ScheduleFactory;
 import org.catframework.agileworking.domain.ScheduleRepository;
+import org.catframework.agileworking.domain.User;
+import org.catframework.agileworking.domain.UserFactory;
+import org.catframework.agileworking.domain.UserRepository;
 import org.catframework.agileworking.utils.DateUtils;
 import org.catframework.agileworking.web.support.Result;
 import org.junit.After;
@@ -32,16 +35,29 @@ public class MeetingRoomControllerTest {
 	@Autowired
 	private ScheduleRepository scheduleRepository;
 
+	@Autowired
+	private UserRepository userRepository;
+	
+	private User user1 = UserFactory.newDefaultUser();
+	private User user2 = UserFactory.newDefaultUser();
+	
 	private List<MeetingRoom> meetingRooms = MeetingRoomFactory.defaultMeetingRooms();
 
 	@Before
 	public void before() {
+		user1.setOpenId("七猫");
+		user2.setOpenId("发哥");
+		userRepository.save(user1);
+		userRepository.save(user2);
 		meetingRoomRepository.save(meetingRooms);
 	}
 
 	@After
 	public void after() {
 		meetingRoomRepository.delete(meetingRooms);
+		userRepository.delete(user1);
+		userRepository.delete(user2);
+		
 	}
 
 	@Test

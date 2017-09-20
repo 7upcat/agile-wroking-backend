@@ -8,6 +8,7 @@ import org.catframework.agileworking.domain.Schedule;
 import org.catframework.agileworking.domain.ScheduleRepository;
 import org.catframework.agileworking.domain.TeamRepository;
 import org.catframework.agileworking.domain.User;
+import org.catframework.agileworking.domain.UserRepository;
 import org.catframework.agileworking.web.support.DefaultResult;
 import org.catframework.agileworking.web.support.Result;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,6 +31,9 @@ public class ScheduleController {
 	@Autowired
 	private TeamRepository teamRepository;
 
+	@Autowired
+	private UserRepository userRepository;
+	
 	@RequestMapping(path = "/schedules/{id}/join", method = RequestMethod.POST)
 	public Result<Schedule> join(@PathVariable Long id, @RequestBody Participant participant) {
 		Schedule schedule = scheduleRepository.findOne(id);
@@ -52,6 +56,8 @@ public class ScheduleController {
 	@RequestMapping(path = "/schedules/{id}", method = RequestMethod.GET)
 	public Result<Schedule> get(@PathVariable Long id) {
 		Schedule schedule = scheduleRepository.findOne(id);
+		User user = userRepository.findOneByOpenId(schedule.getCreatorOpenId());
+		schedule.setCreatorNickName(schedule.getCreatorNickName()+"("+user.getName()+"/"+user.getMobileNo()+")");
 		return DefaultResult.newResult(schedule);
 	}
 

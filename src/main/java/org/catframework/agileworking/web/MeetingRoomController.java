@@ -2,12 +2,15 @@ package org.catframework.agileworking.web;
 
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.catframework.agileworking.domain.MeetingRoom;
 import org.catframework.agileworking.domain.MeetingRoomRepository;
 import org.catframework.agileworking.domain.Participant;
 import org.catframework.agileworking.domain.Schedule;
 import org.catframework.agileworking.domain.ScheduleRepository;
+import org.catframework.agileworking.domain.User;
+import org.catframework.agileworking.domain.UserRepository;
 import org.catframework.agileworking.service.ScheduleService;
 import org.catframework.agileworking.utils.DateUtils;
 import org.catframework.agileworking.web.support.DefaultResult;
@@ -34,6 +37,9 @@ public class MeetingRoomController {
 	@Autowired
 	private ScheduleService scheduleService;
 
+	@Autowired
+	private UserRepository userRepository;
+
 	@RequestMapping(path = "/meetingRooms/{id}", method = RequestMethod.GET)
 	public Result<List<MeetingRoom>> list(@PathVariable Long id) {
 		return DefaultResult.newResult(meetingRoomRepository.findByTeamId(id));
@@ -47,7 +53,7 @@ public class MeetingRoomController {
 	 */
 	@RequestMapping(path = "/meetingRooms/{id}/schedule", method = RequestMethod.POST)
 	public synchronized Result<Schedule> createOrUpdateSchedule(@PathVariable(name = "id") Long id,
-			@RequestParam(name = "formId",required = false) String formId, @RequestBody Schedule schedule) {
+			@RequestParam(name = "formId", required = false) String formId, @RequestBody Schedule schedule) {
 		MeetingRoom meetingRoom = meetingRoomRepository.findOne(id);
 		validate(id, schedule);
 		if (null == schedule.getId()) {
@@ -67,7 +73,7 @@ public class MeetingRoomController {
 		return DefaultResult.newResult(schedule);
 	}
 
-	private Participant creatorAsParticipant(Schedule schedule,String formId){
+	private Participant creatorAsParticipant(Schedule schedule, String formId) {
 		Participant p = new Participant();
 		p.setAvatarUrl(schedule.getCreatorAvatarUrl());
 		p.setDate(schedule.getDate());
@@ -99,8 +105,12 @@ public class MeetingRoomController {
 	 */
 	@RequestMapping(path = "/meetingRooms/{id}/schedule", method = RequestMethod.GET)
 	public Result<List<Schedule>> schedules(@PathVariable Long id,
-			@RequestParam(name = "date") @DateTimeFormat(pattern=DateUtils.PATTERN_SIMPLE_DATE) Date date) {
-		return DefaultResult.newResult(scheduleService.find(id, date));
+			@RequestParam(name = "date") @DateTimeFormat(pattern = DateUtils.PATTERN_SIMPLE_DATE) Date date) {
+		return DefaultResult.newResult(scheduleService.find(id, date).stream().map(s -> {
+			User user = userRepository.findOneByOpenId(s.getCreatorOpenId());
+			s.setCreatorNickName(s.getCreatorNickName() + "(" + user.getName() + "/" + user.getMobileNo() + ")");
+			return s;
+		}).collect(Collectors.toList()));
 	}
 
 	private void validate(Long id, Schedule schedule) {
@@ -120,5 +130,9 @@ public class MeetingRoomController {
 	public void setScheduleService(ScheduleService scheduleService) {
 		this.scheduleService = scheduleService;
 	}
-	
+
+	public void setUserRepository(UserRepository userRepository) {
+		this.userRepository = userRepository;
+	}
+
 }

@@ -14,6 +14,9 @@ import org.catframework.agileworking.domain.MeetingRoomRepository;
 import org.catframework.agileworking.domain.Schedule;
 import org.catframework.agileworking.domain.ScheduleFactory;
 import org.catframework.agileworking.domain.ScheduleRepository;
+import org.catframework.agileworking.domain.User;
+import org.catframework.agileworking.domain.UserFactory;
+import org.catframework.agileworking.domain.UserRepository;
 import org.catframework.agileworking.utils.DateUtils;
 import org.catframework.agileworking.web.MeetingRoomController;
 import org.catframework.agileworking.web.support.Result;
@@ -37,17 +40,25 @@ public class ScheduleServiceImplTest {
 
 	@Autowired
 	private ScheduleRepository scheduleRepository;
+	
+	@Autowired
+	private UserRepository userRepository;
 
 	private List<MeetingRoom> meetingRooms = MeetingRoomFactory.defaultMeetingRooms();
 
+	private User user = UserFactory.newDefaultUser();
+	
 	@Before
 	public void before() {
+		user.setOpenId("七猫");
+		userRepository.save(user);
 		meetingRoomRepository.save(meetingRooms);
 	}
 
 	@After
 	public void after() {
 		meetingRoomRepository.delete(meetingRooms);
+		userRepository.delete(user);
 	}
 
 	@Test
