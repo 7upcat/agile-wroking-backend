@@ -2,7 +2,6 @@ package org.catframework.agileworking.scheduling;
 
 import java.util.Date;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 import org.apache.commons.logging.Log;
@@ -71,8 +70,7 @@ public class SendNotifyMessageJob {
 		}
 
 		String accessToken = getAccessToken();
-		List<ScheduleVO> scheduleVOs = scheduleRepository.findByDate(date);
-		scheduleVOs.forEach(s -> {
+		scheduleRepository.findByDate(date).forEach(s -> {
 			if (cache.contains(new Long(s.getScheduleId().intValue()))) {
 				return;
 			}
