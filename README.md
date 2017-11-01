@@ -7,9 +7,9 @@
 - 全面使用 *Java8* 函数式编码风格，代码简洁、高效，易读
 - 采用 [领域模型设计](https://en.wikipedia.org/wiki/Domain-driven_design) 的风格组织代码，应对复杂逻辑
 - 使用 *SpringBoot* 构建，*Convension Over Configuration*，零配置
-- 提供  *Restful* 风格的  API 供访问
+- 提供  *Restful* 风格的  API 易于前端访问
 - 支持小程序的会话管理及接口调用的安全控制
-  
+- 支持会议提醒及邀请其他人加入会议
 
 ## 演示
 
