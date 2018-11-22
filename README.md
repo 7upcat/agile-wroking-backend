@@ -28,7 +28,7 @@
 - git clone https://github.com/7upcat/agile-wroking-backend.git
 - cd agile-working-backend
 - mvn package
-- java -jar target\agile-working-backend-0.0.1-SNAPSHOT.jar
+- java -jar target\agile-working-backend-1.0.3.jar
 
 ## 单元测试
 
