@@ -1,6 +1,9 @@
 package org.catframework.agileworking.domain;
 
 import java.io.Serializable;
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -14,6 +17,9 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 /**
@@ -25,6 +31,8 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 public class Schedule implements Serializable, Comparable<Schedule> {
 
 	private static final long serialVersionUID = 1L;
+	
+	private static final Logger logger = LoggerFactory.getLogger(Schedule.class);
 
 	/** 排期的重复模式：不重复. */
 	public static final String REPEAT_MODE_NO = "N";
@@ -122,11 +130,21 @@ public class Schedule implements Serializable, Comparable<Schedule> {
 	}
 
 	public String getCreatorNickName() {
-		return creatorNickName;
+		try {
+			return  URLDecoder.decode(this.creatorNickName, "utf-8");
+		} catch (UnsupportedEncodingException e) {
+			logger.warn("decode creatorNickName fail:",e);
+			return this.creatorNickName;
+		}
 	}
 
 	public void setCreatorNickName(String creatorNickName) {
-		this.creatorNickName = creatorNickName;
+		try {
+			this.creatorNickName = URLEncoder.encode(creatorNickName, "utf-8");
+		} catch (UnsupportedEncodingException e) {
+			logger.warn("encode creatorNickName fail:",e);
+			this.creatorNickName = creatorNickName;
+		}
 	}
 
 	public String getCreatorAvatarUrl() {
