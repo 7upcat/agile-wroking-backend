@@ -31,7 +31,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 public class Schedule implements Serializable, Comparable<Schedule> {
 
 	private static final long serialVersionUID = 1L;
-	
+
 	private static final Logger logger = LoggerFactory.getLogger(Schedule.class);
 
 	/** 排期的重复模式：不重复. */
@@ -64,10 +64,10 @@ public class Schedule implements Serializable, Comparable<Schedule> {
 	@Column(nullable = false)
 	private String endTime;
 
-	/** 创建者的微信 openId*/
+	/** 创建者的微信 openId */
 	@Column(nullable = false)
 	private String creatorOpenId;
-	
+
 	/** 创建者的微信昵称. */
 	@Column(nullable = false)
 	private String creatorNickName;
@@ -131,9 +131,9 @@ public class Schedule implements Serializable, Comparable<Schedule> {
 
 	public String getCreatorNickName() {
 		try {
-			return  URLDecoder.decode(this.creatorNickName, "utf-8");
+			return null == creatorNickName ? null : URLDecoder.decode(this.creatorNickName, "utf-8");
 		} catch (UnsupportedEncodingException e) {
-			logger.warn("decode creatorNickName fail:",e);
+			logger.warn("decode creatorNickName fail:", e);
 			return this.creatorNickName;
 		}
 	}
@@ -142,7 +142,7 @@ public class Schedule implements Serializable, Comparable<Schedule> {
 		try {
 			this.creatorNickName = URLEncoder.encode(creatorNickName, "utf-8");
 		} catch (UnsupportedEncodingException e) {
-			logger.warn("encode creatorNickName fail:",e);
+			logger.warn("encode creatorNickName fail:", e);
 			this.creatorNickName = creatorNickName;
 		}
 	}
@@ -174,7 +174,7 @@ public class Schedule implements Serializable, Comparable<Schedule> {
 	public void setMeetingRoom(MeetingRoom meetingRoom) {
 		this.meetingRoom = meetingRoom;
 	}
-	
+
 	public String getCreatorOpenId() {
 		return creatorOpenId;
 	}
@@ -198,16 +198,17 @@ public class Schedule implements Serializable, Comparable<Schedule> {
 	/**
 	 * 判断当前排期和指定的排期是否有冲突.
 	 * 
-	 * @param schedule 指定用来判断是否冲突的排期
+	 * @param schedule
+	 *            指定用来判断是否冲突的排期
 	 * @return 有冲突返回 <code>true</code>
 	 */
 	public boolean isConflict(Schedule schedule) {
-		
-		// 同一个排期肯定不算冲突 
-		if(getId().equals(schedule.getId())) {
+
+		// 同一个排期肯定不算冲突
+		if (getId().equals(schedule.getId())) {
 			return false;
 		}
-		
+
 		if (date.compareTo(schedule.getDate()) != 0) {
 			return false;
 		}
@@ -222,7 +223,7 @@ public class Schedule implements Serializable, Comparable<Schedule> {
 		}
 		return false;
 	}
-	
+
 	@Override
 	public int compareTo(Schedule o) {
 		if (this.date.compareTo(o.getDate()) == 0) {
